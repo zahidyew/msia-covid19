@@ -1,0 +1,16 @@
+{
+  "name": "js_msia-covid19",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gh-pages -d dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://zahidyew.github.io/msia_covid19",
+  "dependencies": {
+    "gh-pages": "^2.2.0"
+  }
+}
