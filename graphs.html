@@ -1,0 +1,333 @@
+<!doctype html>
+<html class="fixed sidebar-left-collapsed">
+
+<head>
+
+   <!-- Basic -->
+   <meta charset="UTF-8">
+
+   <title>Malaysia Covid-19</title>
+   <meta name="keywords" content="HTML5 Admin Template" />
+   <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
+   <meta name="author" content="JSOFT.net">
+
+   <!-- Mobile Metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+   <!-- Web Fonts  -->
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+      rel="stylesheet" type="text/css">
+
+   <!-- Vendor CSS -->
+   <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css" />
+   <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.css" />
+   <link rel="stylesheet" href="../assets/vendor/magnific-popup/magnific-popup.css" />
+   <link rel="stylesheet" href="../assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
+
+   <!-- Specific Page Vendor CSS -->
+   <link rel="stylesheet" href="../assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
+   <link rel="stylesheet" href="../assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+
+   <!-- Specific Page Vendor CSS -->
+   <link rel="stylesheet" href="../assets/vendor/select2/select2.css" />
+   <link rel="stylesheet" href="../assets/vendor/jquery-datatables-bs3/assets/css/datatables.css" />
+
+   <!-- Theme CSS -->
+   <link rel="stylesheet" href="../assets/stylesheets/theme.css" />
+
+   <!-- Skin CSS -->
+   <link rel="stylesheet" href="../assets/stylesheets/skins/default.css" />
+
+   <!-- Theme Custom CSS -->
+   <link rel="stylesheet" href="../assets/stylesheets/theme-custom.css">
+
+   <!-- Head Libs -->
+   <script src="../assets/vendor/modernizr/modernizr.js"></script>
+
+   <!-- Favicon -->
+   <!-- <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
+   <link rel="icon" href="../assets/images/favicon.ico" type="image/x-icon"> -->
+
+   <!-- Styles -->
+   <style>
+      .charts {
+         width: 100%;
+         height: 500px;
+      }
+   </style>
+
+</head>
+
+<body>
+   <section class="body">
+
+      <!-- start: header -->
+      <header class="header">
+         <div class="logo-container">
+            <a href="./index.html" class="logo">
+               <p>Malaysia Covid-19</p>
+               <!-- <img src="assets/images/logo.png" height="35" alt="JSOFT Admin" /> -->
+            </a>
+            <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
+               data-fire-event="sidebar-left-opened">
+               <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+         </div>
+      </header>
+      <!-- end: header -->
+
+      <div class="inner-wrapper">
+         <!-- start: sidebar -->
+         <aside id="sidebar-left" class="sidebar-left">
+
+            <div class="sidebar-header">
+               <div class="sidebar-title">
+                  Navigation
+               </div>
+               <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
+                  data-fire-event="sidebar-left-toggle">
+                  <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+               </div>
+            </div>
+
+            <div class="nano">
+               <div class="nano-content">
+                  <nav id="menu" class="nav-main" role="navigation">
+                     <ul class="nav nav-main">
+                        <li class="nav-active">
+                           <a href="./index.html">
+                              <i class="fa fa-home" aria-hidden="true"></i>
+                              <span>Homepage</span>
+                           </a>
+                        </li>
+
+                        <li class="nav-active">
+                           <a href="./simpleVersion.html">
+                              <i class="fa fa-plus" aria-hidden="true"></i>
+                              <span>Simple Version</span>
+                           </a>
+                        </li>
+                  </nav>
+               </div>
+            </div>
+         </aside>
+         <!-- end: sidebar -->
+
+         <section role="main" class="content-body">
+            <header class="page-header">
+               <h2>Malaysia Covid-19</h2>
+            </header>
+            <div class="panel-body">
+               <h2>Malaysia Covid-19</h2><br>
+               <h3>New Cases, Recoveries, Deaths</h3>
+               <div class="charts" id="chartdiv"></div>
+               <h3>New Cases vs Total Cases</h3>
+               <div class="charts" id="sda"></div>
+            </div>
+            <!-- start: page -->
+            <!-- end: page -->
+         </section>
+      </div>
+   </section>
+
+   <!-- Graphing Resources -->
+   <script src="../assets/vendor/amcharts/core.js"></script>
+   <script src="../assets/vendor/amcharts/charts.js"></script>
+   <script src="../assets/vendor/amcharts/themes/animated.js"></script>
+
+   <script src="../assets/vendor/amcharts/themes/patterns.js"></script>
+   <script src="../assets/vendor/amcharts/themes/spiritedaway.js"></script>
+   <script src="../assets/vendor/amcharts/themes/material.js"></script>
+
+
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+   <script>
+      var chartData = [];
+
+      const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1arFbupT4hbnCO2FL0C8H5IFleJxEwICSZgH5EjY4554/edit#gid=0';
+      const population = 32255684;
+
+      function init() {
+         Tabletop.init({
+            key: publicSpreadsheetUrl,
+            callback: processData,
+            simpleSheet: true
+         })
+      }
+
+      window.addEventListener('DOMContentLoaded', init);
+
+      function processData(data, tabletop) {
+         let sheetData = data;
+         let size = sheetData.length;
+         let covidData = [], activeCases = [], newCases = [];
+         let totalCases = 0, totalRecovered = 0, totalDeath = 0, populationInfected = 0, differences = 0, growthFactor = 0;
+
+         for (let i = 0; i < size; i++) {
+            newCases[i] = sheetData[i].new_cases;
+            totalCases = totalCases + parseInt(sheetData[i].new_cases);
+            totalRecovered = totalRecovered + parseInt(sheetData[i].recovered);
+            totalDeath = totalDeath + parseInt(sheetData[i].death);
+            activeCases[i] = totalCases - totalRecovered - totalDeath;
+            populationInfected = parseFloat((totalCases / population * 100).toFixed(6));
+
+            if (i > 0) {
+               differences = activeCases[i] - activeCases[i - 1];
+               newCases[i - 1] == 0 ? (growthFactor = "NaN") : growthFactor = parseFloat((newCases[i] / newCases[i - 1]).toFixed(3));
+            }
+
+            covidData.push({
+               date: sheetData[i].date,
+               new_case: parseInt(sheetData[i].new_cases),
+               recovered: parseInt(sheetData[i].recovered),
+               death: parseInt(sheetData[i].death),
+               totalCases: totalCases,
+               totalRecovered: totalRecovered,
+               totalDeath: totalDeath,
+               activeCases: activeCases[i],
+               differences: differences,
+               populationInfected: populationInfected,
+               growthFactor: growthFactor
+            });
+         }
+         generateChartData(covidData);
+      }
+
+      function generateChartData(data) {
+         let size = Object.keys(data).length;
+
+         for (let i = 0; i < size; i++) {
+            chartData.push({
+               date: data[i].date,
+               cases: data[i].new_case,
+               recovered: data[i].recovered,
+               deaths: data[i].death,
+               totals: data[i].totalCases
+            });
+         }
+         drawGraph();
+         drawGraph2();
+      }
+
+      function drawGraph() {
+         am4core.useTheme(am4themes_patterns);
+         am4core.useTheme(am4themes_animated);
+         
+         const chart = am4core.create("chartdiv", am4charts.XYChart);
+         const xAxis = chart.xAxes.push(new am4charts.DateAxis());
+         const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+         
+         chart.data = chartData;
+         xAxis.renderer.minGridDistance = 50;
+
+         const graph1 = createGraph(chart, "line", "New Cases", "dv", "date", "cases", "default");
+         const graph2 = createGraph(chart, "line", "Recovered", "dv", "date", "recovered", "#32CD32");
+         const graph3 = createGraph(chart, "line", "Deaths", "dv", "date", "deaths", "#DC143C")
+
+         // Add scrollbar
+         chart.scrollbarX = new am4charts.XYChartScrollbar();
+         chart.scrollbarX.series.push(graph1);
+         chart.scrollbarX.series.push(graph2);
+         chart.scrollbarX.series.push(graph3);
+
+         // Add cursor
+         chart.cursor = new am4charts.XYCursor();
+         chart.cursor.xAxis = xAxis;
+         chart.legend = new am4charts.Legend();
+         //chart.cursor.snapToSeries = series;         
+         //series2.hidden = true;
+      }
+     
+      function drawGraph2() {
+         am4core.useTheme(am4themes_patterns);
+         am4core.useTheme(am4themes_animated);
+
+         const chart = am4core.create("sda", am4charts.XYChart);
+         const xAxis = chart.xAxes.push(new am4charts.ValueAxis());
+         const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+         chart.data = chartData;
+         xAxis.renderer.minGridDistance = 50;
+         //yAxis.logarithmic = true;
+         
+         const graph = createGraph(chart, "line", "Total Infected", "vv", "totals", "cases", "default");
+         //const graph2 = createGraph(chart, "line", "Total Infected", "vv", "totals", "recovered", "default");
+
+         // Add scrollbar
+         chart.scrollbarX = new am4charts.XYChartScrollbar();
+         chart.scrollbarX.series.push(graph);
+         //chart.scrollbarX.series.push(graph2);
+
+         // Add cursor & disable some elements
+         chart.cursor = new am4charts.XYCursor();
+         chart.legend = new am4charts.Legend();
+         chart.cursor.snapToSeries = graph;   
+         /* chart.cursor.lineX.disabled = true;
+         chart.cursor.lineY.disabled = true; */
+         xAxis.cursorTooltipEnabled = false;
+         yAxis.cursorTooltipEnabled = false;      
+         }
+
+      function createGraph(chart, type, cName, xyType, xAxis, yAxis, color) {
+         let graph;
+
+         type == "line" ? (graph = chart.series.push(new am4charts.LineSeries())) :
+         type == "bar" ? (graph = chart.series.push(new am4charts.ColumnSeries())) :
+         type == "filled line" ? (graph = chart.series.push(new am4charts.CurvedColumnSeries())) :
+         false;
+
+         xyType == "dv" ? (
+            graph.dataFields.dateX = xAxis, 
+            graph.dataFields.valueY = yAxis,  
+            graph.tooltipText = `${cName}: {valueY}`) :
+         xyType == "vv" ? (
+            graph.dataFields.valueX = xAxis, 
+            graph.dataFields.valueY = yAxis,  
+            graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {valueX}`) :
+         xyType == "cv" ? (
+            graph.dataFields.categoryX = xAxis, 
+            graph.dataFields.valueY = yAxis,
+            graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {categoryX}`) :
+         false;
+
+         graph.name = cName;  
+         graph.strokeWidth = 2;
+         graph.minBulletDistance = 10;
+         graph.tooltip.pointerOrientation = "vertical";
+         graph.tooltip.background.cornerRadius = 20;
+         graph.tooltip.background.fillOpacity = 0.5;
+         graph.tooltip.label.padding(12, 12, 12, 12);
+
+         color == "default" ? (false) :
+            graph.stroke = am4core.color(color);
+
+         return graph;
+      }
+   </script>
+   
+   <!-- Vendor -->
+   <script src="../assets/vendor/jquery/jquery.js"></script>
+   <script src="../assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+   <script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+   <script src="../assets/vendor/nanoscroller/nanoscroller.js"></script>
+   <script src="../assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+   <script src="../assets/vendor/magnific-popup/magnific-popup.js"></script>
+   <script src="../assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+   <!-- Specific Page Vendor -->
+   <script src="../assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
+   <script src="../assets/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js"></script>
+   <script src="../assets/vendor/jquery-appear/jquery.appear.js"></script>
+   <script src="../assets/vendor/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+
+   <!-- Theme Base, Components and Settings -->
+   <script src="../assets/javascripts/theme.js"></script>
+
+   <!-- Theme Custom -->
+   <script src="../assets/javascripts/theme.custom.js"></script>
+
+   <!-- Theme Initialization Files -->
+   <script src="../assets/javascripts/theme.init.js"></script>
+</body>
+
+</html>
