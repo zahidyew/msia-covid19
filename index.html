@@ -6,7 +6,7 @@
    <!-- Basic -->
    <meta charset="UTF-8">
 
-   <title>Malaysia Covid-19</title>
+   <title>Covid-19 Cases in Malaysia</title>
    <meta name="keywords" content="HTML5 Admin Template" />
    <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
    <meta name="author" content="JSOFT.net">
@@ -40,6 +40,9 @@
    <!-- Theme Custom CSS -->
    <link rel="stylesheet" href="./assets/stylesheets/theme-custom.css">
 
+   <!-- CSS for Graphs -->
+   <link rel="stylesheet" href="./assets/stylesheets/styles-graphs.css">
+
    <!-- Head Libs -->
    <script src="./assets/vendor/modernizr/modernizr.js"></script>
 
@@ -56,7 +59,7 @@
       <header class="header">
          <div class="logo-container">
             <a href="./index.html" class="logo">
-               <p>Malaysia Covid-19</p>
+               <p>Covid-19</p>
                <!-- <img src="assets/images/logo.png" height="35" alt="JSOFT Admin" /> -->
             </a>
             <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
@@ -95,12 +98,6 @@
                               <span>Simple Version</span>
                            </a>
                         </li>
-                        <li class="nav-active">
-                           <a href="./graphs.html">
-                              <i class="fa fa-plus" aria-hidden="true"></i>
-                              <span>Graphs</span>
-                           </a>
-                        </li>
                   </nav>
                </div>
             </div>
@@ -109,36 +106,84 @@
 
          <section role="main" class="content-body">
             <header class="page-header">
-               <h2>Malaysia Covid-19</h2>
+               <h2>Covid-19</h2>
             </header>
-            <div class="panel-body">
-               <h2>Malaysia Covid-19</h2><br>
-               <!-- <div class="row">
-                  <div class="col-sm-12 text-right">
-                     <button id="addQuiz" class="btn btn-primary">Add New Quiz <i class="fa fa-plus"></i></button>
+            <div class="tabs tabs-primary">
+               <h2>Covid-19 Cases in Malaysia</h2><br>
+               <ul class="nav nav-tabs nav-justified">
+                  <li class="active">
+                     <a href="#covidTable" data-toggle="tab" class="text-center"><i class="fa fa-table"></i> Table</a>
+                  </li>
+                  <li>
+                     <a href="#covidGraphs" data-toggle="tab" class="text-center"><i class="fa fa-bar-chart-o"></i> Graphs</a>
+                  </li>
+                  <li>
+                     <a href="#summary" data-toggle="tab" class="text-center"><i class="fa fa-star"></i> Summary</a>
+                  </li>
+               </ul>
+               <div class="tab-content">
+                  <div id="covidTable" class="tab-pane active">
+                     <!-- <h3>sadasd</h3> -->
+                     <table class="table table-bordered table-striped mb-none" id="datatable-tabletools">
+                        <thead>
+                           <tr>
+                              <th>No</th>
+                              <th class="col-sm-1">Date</th>
+                              <th>New Cases</th>
+                              <th>Recovered</th>
+                              <th>Death</th>
+                              <th>Total Cases</th>
+                              <th>Total Recovered</th>
+                              <th>Total Deaths</th>
+                              <th>Active Cases</th>
+                              <th>Difference</th>
+                              <th>Infected %</th>
+                              <th>Growth Factor</th>
+                           </tr>
+                        </thead>
+                        <tbody></tbody>
+                     </table>
                   </div>
-               </div><br> -->
-               <table class="table table-bordered table-striped mb-none" id="datatable-default">
-                  <thead>
-                     <tr>
-                        <th>No</th>
-                        <th class="col-sm-1">Date</th>
-                        <th>New Cases</th>
-                        <th>Recovered</th>
-                        <th>Death</th>
-                        <th>Total Cases</th>
-                        <th>Total Recovered</th>
-                        <th>Total Deaths</th>
-                        <th>Active Cases</th>
-                        <th>Difference</th>
-                        <th>Infected %</th>
-                        <th>Growth Factor</th>
-                     </tr>
-                  </thead>
-                  <tbody>
 
-                  </tbody>
-               </table>
+                  <div id="covidGraphs" class="tab-pane">
+                     <section class="panel panel-featured">
+                        <header class="panel-heading">
+                           <div class="panel-actions">
+                              <a href="#" class="fa fa-caret-down"></a>
+                           </div>
+                  
+                           <h2 class="panel-title">New Cases, Recoveries, Deaths</h2>
+                           <p class="panel-subtitle">A bar graph to visualize ...</p>
+                        </header>
+                        <div class="panel-body">
+                           <!-- Content here: the graph to be drawn -->
+                           <div class="charts" id="chartdiv"></div>
+                        </div>
+                     </section>
+
+                     <section class="panel panel-featured">
+                        <header class="panel-heading">
+                           <div class="panel-actions">
+                              <a href="#" class="fa fa-caret-down"></a>
+                           </div>
+                     
+                           <h2 class="panel-title">New Cases vs Total Cases</h2>
+                           <p class="panel-subtitle">A bar graph to visualize ...</p>
+                        </header>
+                        <div class="panel-body">
+                           <!-- Content here: the graph to be drawn -->
+                           <div class="charts" id="chartdiv2"></div>
+                        </div>
+                     </section>
+
+                     <p>Under Construction...</p>
+                  </div>
+
+                  <div id="summary" class="tab-pane">
+                     <p>Under Construction...</p>
+                  </div>
+
+               </div>
             </div>
             <!-- start: page -->
             <!-- end: page -->
@@ -146,10 +191,14 @@
       </div>
    </section>
 
+   <!-- Graphing Resources -->
+   <script src="./assets/vendor/amcharts/core.js"></script>
+   <script src="./assets/vendor/amcharts/charts.js"></script>
+   <script src="./assets/vendor/amcharts/themes/animated.js"></script>
+   <script src="./assets/vendor/amcharts/themes/patterns.js"></script>
+
    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>      
    <script>
-      const table = document.getElementById("datatable-default");
-
       const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1arFbupT4hbnCO2FL0C8H5IFleJxEwICSZgH5EjY4554/edit#gid=0';
       const population = 32255684;
 
@@ -206,11 +255,14 @@
          for (let i = 0; i < size; i++) {
             createRow(data[i], i+1);
          }
+
+         drawGraph(data);
+         drawGraph2(data);
       }
 
       function createRow(data, num) {
          // since its a jquery table, gotta follow their method on adding new rows
-         var t = $('#datatable-default').DataTable();
+         var t = $('#datatable-tabletools').DataTable();
          var counter = 1;
          t.row.add([
             num,
@@ -235,7 +287,112 @@
             x[0].remove();
          } */
       }      
+
+      function drawGraph(data) {
+         am4core.useTheme(am4themes_patterns);
+         am4core.useTheme(am4themes_animated);
+         
+         const chart = am4core.create("chartdiv", am4charts.XYChart);
+         const xAxis = chart.xAxes.push(new am4charts.DateAxis());
+         const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+         
+         chart.data = data;
+         xAxis.renderer.minGridDistance = 50;
+
+         const graph1 = createGraph(chart, "line", "New Cases", "dv", "date", "new_case", "default");
+         const graph2 = createGraph(chart, "line", "Recovered", "dv", "date", "recovered", "#32CD32");
+         const graph3 = createGraph(chart, "line", "Deaths", "dv", "date", "death", "#DC143C")
+
+         // Add scrollbar
+         chart.scrollbarX = new am4charts.XYChartScrollbar();
+         chart.scrollbarX.series.push(graph1);
+         chart.scrollbarX.series.push(graph2);
+         chart.scrollbarX.series.push(graph3);
+
+         // Add cursor
+         chart.cursor = new am4charts.XYCursor();
+         chart.cursor.xAxis = xAxis;
+         chart.legend = new am4charts.Legend();
+         //chart.cursor.snapToSeries = series;         
+         //series2.hidden = true;
+      }
+     
+      function drawGraph2(data) {
+         am4core.useTheme(am4themes_patterns);
+         am4core.useTheme(am4themes_animated);
+
+         const chart = am4core.create("chartdiv2", am4charts.XYChart);
+         const xAxis = chart.xAxes.push(new am4charts.ValueAxis());
+         const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+         chart.data = data;
+         xAxis.renderer.minGridDistance = 50;
+         //yAxis.logarithmic = true;
+         
+         const graph = createGraph(chart, "line", "Total Infected", "vv", "totalCases", "new_case", "default");
+         //const graph2 = createGraph(chart, "line", "Total Infected", "vv", "totalCases", "recovered", "default");
+
+         // Add scrollbar
+         chart.scrollbarX = new am4charts.XYChartScrollbar();
+         chart.scrollbarX.series.push(graph);
+         //chart.scrollbarX.series.push(graph2);
+
+         // Add cursor & disable some elements
+         chart.cursor = new am4charts.XYCursor();
+         //chart.legend = new am4charts.Legend();
+         chart.cursor.snapToSeries = graph;   
+         /* chart.cursor.lineX.disabled = true;
+         chart.cursor.lineY.disabled = true; */
+         xAxis.cursorTooltipEnabled = false;
+         yAxis.cursorTooltipEnabled = false;      
+         }
+
+      function createGraph(chart, type, cName, xyType, xAxis, yAxis, color) {
+         let graph;
+
+         type == "line" ? (graph = chart.series.push(new am4charts.LineSeries())) :
+         type == "bar" ? (graph = chart.series.push(new am4charts.ColumnSeries())) :
+         type == "filled line" ? (graph = chart.series.push(new am4charts.CurvedColumnSeries())) :
+         false;
+
+         xyType == "dv" ? (
+            graph.dataFields.dateX = xAxis, 
+            graph.dataFields.valueY = yAxis,  
+            graph.tooltipText = `${cName}: {valueY}`) :
+         xyType == "vv" ? (
+            graph.dataFields.valueX = xAxis, 
+            graph.dataFields.valueY = yAxis,  
+            graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {valueX}`) :
+         xyType == "cv" ? (
+            graph.dataFields.categoryX = xAxis, 
+            graph.dataFields.valueY = yAxis,
+            graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {categoryX}`) :
+         false;
+
+         graph.name = cName;  
+         graph.strokeWidth = 2;
+         graph.minBulletDistance = 10;
+         graph.tooltip.pointerOrientation = "vertical";
+         graph.tooltip.background.cornerRadius = 20;
+         graph.tooltip.background.fillOpacity = 0.5;
+         graph.tooltip.label.padding(12, 12, 12, 12);
+
+         color == "default" ? (false) :
+            graph.stroke = am4core.color(color);
+
+         return graph;
+      }
    </script>
+
+   <!-- <script>
+      const pElem = document.getElementById("content");
+      const mco = Date.parse("March 18, 2020");
+      const today = Date.now();
+      let a = today - mco
+      let b = new Date();
+
+      pElem.innerHTML = b.setTime(a);
+   </script> -->
 
    <!-- Vendor -->
    <script src="./assets/vendor/jquery/jquery.js"></script>
