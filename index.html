@@ -117,13 +117,54 @@
                   <li>
                      <a href="#covidGraphs" data-toggle="tab" class="text-center"><i class="fa fa-bar-chart-o"></i> Graphs</a>
                   </li>
-                  <li>
+                  <!-- <li>
                      <a href="#summary" data-toggle="tab" class="text-center"><i class="fa fa-star"></i> Summary</a>
-                  </li>
+                  </li> -->
                </ul>
                <div class="tab-content">
                   <div id="covidTable" class="tab-pane active">
-                     <!-- <h3>sadasd</h3> -->
+                     <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Total Cases:</h5>
+                              <h5 id="cases"></h5>
+                           </div>
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Total Recovered:</h5>
+                              <h5 id="recovered"></h5>
+                           </div>
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Total Deaths:</h5>
+                              <h5 id="deaths"></h5>
+                           </div>
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Active Cases:</h5>
+                              <h5 id="activeCases"> <small id="differences"></small></h5>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Population Infected:</h5>
+                              <h5 id="infected"></h5>
+                           </div>
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Recovery Rate:</h5>
+                              <h5 id="recovRate"></h5>
+                           </div>
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Fatality Rate:</h5>
+                              <h5 id="fatalityRate"></h5>
+                           </div>
+                           <div class="col-md-3 col-xs-3">
+                              <h5 class="text-dark">Active Cases %:</h5>
+                              <h5 id="activeCasesPercent"></h5>
+                           </div>
+                        </div>
+                     </div>
+
                      <table class="table table-bordered table-striped mb-none" id="datatable-tabletools">
                         <thead>
                            <tr>
@@ -152,14 +193,14 @@
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
                   
-                           <h2 class="panel-title">New Cases, Recoveries, Deaths</h2>
+                           <h2 class="panel-title">New Cases, Recoveries & Deaths</h2>
                            <p class="panel-subtitle">A bar graph to visualize ...</p>
                         </header>
                         <div class="panel-body">
                            <!-- Content here: the graph to be drawn -->
                            <div class="charts" id="chartdiv"></div>
                         </div>
-                     </section>
+                     </section><br>
 
                      <section class="panel panel-featured">
                         <header class="panel-heading">
@@ -174,15 +215,27 @@
                            <!-- Content here: the graph to be drawn -->
                            <div class="charts" id="chartdiv2"></div>
                         </div>
-                     </section>
+                     </section><br>
 
-                     <p>Under Construction...</p>
+                     <section class="panel panel-featured">
+                        <header class="panel-heading">
+                           <div class="panel-actions">
+                              <a href="#" class="fa fa-caret-down"></a>
+                           </div>
+                     
+                           <h2 class="panel-title">Active Cases, Total Cases & Total Recovered</h2>
+                           <p class="panel-subtitle">A bar graph to visualize ...</p>
+                        </header>
+                        <div class="panel-body">
+                           <!-- Content here: the graph to be drawn -->
+                           <div class="charts" id="chartdiv3"></div>
+                        </div>
+                     </section><br>
                   </div>
 
-                  <div id="summary" class="tab-pane">
-                     <p>Under Construction...</p>
-                  </div>
-
+                  <!-- <div id="summary" class="tab-pane">
+                     
+                  </div> -->
                </div>
             </div>
             <!-- start: page -->
@@ -252,18 +305,26 @@
       function getDataSize(data) {
          const size = Object.keys(data).length;
 
+         displaySummary(data, size);
+
          for (let i = 0; i < size; i++) {
             createRow(data[i], i+1);
          }
 
          drawGraph(data);
          drawGraph2(data);
+         drawGraph3(data);
       }
 
       function createRow(data, num) {
          // since its a jquery table, gotta follow their method on adding new rows
-         var t = $('#datatable-tabletools').DataTable();
-         var counter = 1;
+         const t = $('#datatable-tabletools').DataTable();
+         let diff;
+
+         data.differences > 0 ?
+            (diff = `+${data.differences}`) :
+            (diff = data.differences.toString());
+
          t.row.add([
             num,
             data.date,
@@ -274,18 +335,10 @@
             data.totalRecovered,
             data.totalDeath,
             data.activeCases,
-            data.differences,
+            diff,
             data.populationInfected + "%",
             data.growthFactor
          ]).draw("full-reset");
-
-         /* let x = document.getElementsByTagName("td");
-         x[2].className = "text-center"; */
-         /* let size = x.length;
-
-         for (let i = 0; i < size; i++) {
-            x[0].remove();
-         } */
       }      
 
       function drawGraph(data) {
@@ -301,7 +354,7 @@
 
          const graph1 = createGraph(chart, "line", "New Cases", "dv", "date", "new_case", "default");
          const graph2 = createGraph(chart, "line", "Recovered", "dv", "date", "recovered", "#32CD32");
-         const graph3 = createGraph(chart, "line", "Deaths", "dv", "date", "death", "#DC143C")
+         const graph3 = createGraph(chart, "line", "Deaths", "dv", "date", "death", "#DC143C");
 
          // Add scrollbar
          chart.scrollbarX = new am4charts.XYChartScrollbar();
@@ -318,9 +371,6 @@
       }
      
       function drawGraph2(data) {
-         am4core.useTheme(am4themes_patterns);
-         am4core.useTheme(am4themes_animated);
-
          const chart = am4core.create("chartdiv2", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.ValueAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
@@ -345,7 +395,36 @@
          chart.cursor.lineY.disabled = true; */
          xAxis.cursorTooltipEnabled = false;
          yAxis.cursorTooltipEnabled = false;      
-         }
+      }
+
+      function drawGraph3(data) {         
+         const chart = am4core.create("chartdiv3", am4charts.XYChart);
+         const xAxis = chart.xAxes.push(new am4charts.DateAxis());
+         const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+         
+         chart.data = data;
+         xAxis.renderer.minGridDistance = 50;
+
+         const graph1 = createGraph(chart, "line", "Active Cases", "dv", "date", "activeCases", "default");
+         const graph2 = createGraph(chart, "line", "Total Cases", "dv", "date", "totalCases", "#DC143C"); 
+         const graph3 = createGraph(chart, "line", "Total Recovered", "dv", "date", "totalRecovered", "#32CD32");
+
+         // Add scrollbar
+         chart.scrollbarX = new am4charts.XYChartScrollbar();
+         chart.scrollbarX.series.push(graph1);
+         chart.scrollbarX.series.push(graph2);
+         chart.scrollbarX.series.push(graph3);
+         // Add scrollbar
+         chart.scrollbarX = new am4charts.XYChartScrollbar();
+         chart.scrollbarX.series.push(graph1);
+         chart.scrollbarX.series.push(graph2);
+         chart.scrollbarX.series.push(graph3);
+
+         // Add cursor
+         chart.cursor = new am4charts.XYCursor();
+         chart.cursor.xAxis = xAxis;
+         chart.legend = new am4charts.Legend();
+      }
 
       function createGraph(chart, type, cName, xyType, xAxis, yAxis, color) {
          let graph;
@@ -382,17 +461,38 @@
 
          return graph;
       }
+
+      function displaySummary(data, size) {
+         const casesElem = document.getElementById("cases");
+         const recoveredElem = document.getElementById("recovered");
+         const deathsElem = document.getElementById("deaths");
+         const activeCasesElem = document.getElementById("activeCases");
+         const differencesElem = document.getElementById("differences");
+         const infectedElem = document.getElementById("infected");
+         const recovRateElem = document.getElementById("recovRate");
+         const fatalityRateElem = document.getElementById("fatalityRate");
+         const activeCasesPercentElem = document.getElementById("activeCasesPercent");
+         const latest = size - 1;
+
+         let recovRate = data[latest].totalRecovered / data[latest].totalCases * 100;
+         let fatalityRate = data[latest].totalDeath / data[latest].totalCases * 100;
+         let activeCasesPercent = data[latest].activeCases / data[latest].totalCases * 100;
+
+         casesElem.innerHTML = data[latest].totalCases;
+         recoveredElem.innerHTML = data[latest].totalRecovered;
+         deathsElem.innerHTML = data[latest].totalDeath;
+         infectedElem.innerHTML = (data[latest].populationInfected).toFixed(3) + "%";
+         recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
+         fatalityRateElem.innerHTML = (fatalityRate).toFixed(2) + "%";
+         activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
+
+         data[latest].differences > 0 ? 
+            (differencesElem.value = `+${data[latest].differences}`) :
+            (differencesElem.value = data[latest].differences);
+            
+         activeCasesElem.innerHTML = `${data[latest].activeCases} (${differencesElem.value})`;
+      }
    </script>
-
-   <!-- <script>
-      const pElem = document.getElementById("content");
-      const mco = Date.parse("March 18, 2020");
-      const today = Date.now();
-      let a = today - mco
-      let b = new Date();
-
-      pElem.innerHTML = b.setTime(a);
-   </script> -->
 
    <!-- Vendor -->
    <script src="./assets/vendor/jquery/jquery.js"></script>
