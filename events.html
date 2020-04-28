@@ -6,7 +6,7 @@
    <!-- Basic -->
    <meta charset="UTF-8">
 
-   <title>Covid-19</title>
+   <title>Covid-19 Cases in Malaysia</title>
    <meta name="keywords" content="HTML5 Admin Template" />
    <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
    <meta name="author" content="JSOFT.net">
@@ -15,7 +15,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
    <!-- Web Fonts  -->
-   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+      rel="stylesheet" type="text/css">
 
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="./assets/vendor/bootstrap/css/bootstrap.css" />
@@ -40,6 +41,9 @@
    <!-- Theme Custom CSS -->
    <link rel="stylesheet" href="./assets/stylesheets/theme-custom.css">
 
+   <!-- CSS for Graphs -->
+   <link rel="stylesheet" href="./assets/stylesheets/styles-graphs.css">
+
    <!-- Head Libs -->
    <script src="./assets/vendor/modernizr/modernizr.js"></script>
 
@@ -59,7 +63,8 @@
                <p>Covid-19</p>
                <!-- <img src="assets/images/logo.png" height="35" alt="JSOFT Admin" /> -->
             </a>
-            <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+            <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
+               data-fire-event="sidebar-left-opened">
                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
             </div>
          </div>
@@ -74,7 +79,8 @@
                <div class="sidebar-title">
                   Navigation
                </div>
-               <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+               <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
+                  data-fire-event="sidebar-left-toggle">
                   <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
                </div>
             </div>
@@ -118,32 +124,71 @@
             <header class="page-header">
                <h2>Covid-19</h2>
             </header>
-            <div class="panel-body">
-               <h2>Covid-19 Cases in Malaysia</h2><br>
-               <!-- <div class="row">
-                  <div class="col-sm-12 text-right">
-                     <button id="addQuiz" class="btn btn-primary">Add New Quiz <i class="fa fa-plus"></i></button>
+            <div class="tabs tabs-primary">
+               <h2>Covid-19: Key Events in Malaysia</h2><br>
+               <ul class="nav nav-tabs nav-justified">
+                  <li class="active">
+                     <a href="#covidEvents" data-toggle="tab" class="text-center"><i class="fa fa-star-o"></i> Events</a>
+                  </li>
+               </ul>
+               <div class="tab-content">
+                  <div id="covidEvents" class="tab-pane active">               
+                     <h4 class="mb-xlg">Timeline</h4>
+                     <div class="timeline timeline-simple mt-xlg mb-md">
+                        <div class="tm-body">
+
+                           <div class="tm-title">
+                              <h3 class="h5 text-uppercase">January 2020</h3>
+                           </div>
+                           <ol id="janList" class="tm-items">
+                              <li class="janItem">
+                                 <div class="tm-box">
+                                    <p class="janDate text-muted mb-none">date here</p>
+                                    <p class="janEvent"> event here </p>
+                                 </div>
+                              </li>
+                           </ol>
+
+                           <div class="tm-title">
+                              <h3 class="h5 text-uppercase">February 2020</h3>
+                           </div>
+                           <ol id="febList" class="tm-items">
+                              <li class="febItem">
+                                 <div class="tm-box">
+                                    <p class=" febDate text-muted mb-none">date here</p>
+                                    <p class="febEvent"> event here </p>
+                                 </div>
+                              </li>
+                           </ol>
+
+                           <div class="tm-title">
+                              <h3 class="h5 text-uppercase">March 2020</h3>
+                           </div>
+                           <ol id="marchList" class="tm-items">
+                              <li class="marchItem">
+                                 <div class="tm-box">
+                                    <p class="marchDate text-muted mb-none">date here</p>
+                                    <p class="marchEvent"> event here </p>
+                                 </div>
+                              </li>
+                           </ol>
+
+                           <div class="tm-title">
+                              <h3 class="h5 text-uppercase">April 2020</h3>
+                           </div>
+                           <ol id="aprilList" class="tm-items">
+                              <li class="aprilItem">
+                                 <div class="tm-box">
+                                    <p class="aprilDate text-muted mb-none">date here</p>
+                                    <p class="aprilEvent"> event here </p>
+                                 </div>
+                              </li>
+                           </ol>
+
+                        </div>
+                     </div>
                   </div>
-               </div><br> -->
-               <table class="table table-bordered table-striped mb-none" id="datatable-default">
-                  <thead>
-                     <tr>
-                        <th>No.</th>
-                        <th class="col-sm-1">Date</th>
-                        <th>New Cases</th>
-                        <th>Recovered</th>
-                        <th>Death</th>
-                        <th>Total Cases</th>
-                        <th>Total Recovered</th>
-                        <th>Total Deaths</th>
-                        <th>Active Cases</th>
-                        <th>Differences</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                    
-                  </tbody>
-               </table>
+               </div>
             </div>
             <!-- start: page -->
             <!-- end: page -->
@@ -153,12 +198,31 @@
 
    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
    <script>
-      const table = document.getElementById("datatable-default");
+      const janListElem = document.getElementById("janList");
+      const febListElem = document.getElementById("febList");
+      const marchListElem = document.getElementById("marchList");
+      const aprilListElem = document.getElementById("aprilList");
 
-      const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1arFbupT4hbnCO2FL0C8H5IFleJxEwICSZgH5EjY4554/edit#gid=0';
+      const janItemElem = document.getElementsByClassName("janItem");
+      const febItemElem = document.getElementsByClassName("febItem");
+      const marchItemElem = document.getElementsByClassName("marchItem");
+      const aprilItemElem = document.getElementsByClassName("aprilItem");
+
+      const janDateElem = document.getElementsByClassName("janDate text-muted mb-none");
+      const febDateElem = document.getElementsByClassName("febDate text-muted mb-none");
+      const marchDateElem = document.getElementsByClassName("marchDate text-muted mb-none");
+      const aprilDateElem = document.getElementsByClassName("aprilDate text-muted mb-none");
+      
+      const janEventElem = document.getElementsByClassName("janEvent");
+      const febEventElem = document.getElementsByClassName("febEvent");
+      const marchEventElem = document.getElementsByClassName("marchEvent");
+      const aprilEventElem = document.getElementsByClassName("aprilEvent");
+      
+      const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1jYmfWfwL2Xz8ENmJRqakI1GQ1GQIxnicg6Zsh8JUMyo/edit?usp=sharing';
 
       window.addEventListener('DOMContentLoaded', init);
-      
+
+      // init Tabletop by passing sheet url to get data from the sheet, then call the processData func
       function init() {
          Tabletop.init({
             key: publicSpreadsheetUrl,
@@ -168,61 +232,41 @@
       }
 
       function processData(data, tabletop) {
-         let sheetData = data;
-         let size = sheetData.length;
-         let covidData = [], activeCases = [];
-         let totalCases = 0, totalRecovered = 0, totalDeath = 0, differences = 0;
+         let size = data.length;
+         let covidData = [];
 
+         console.log(data)
          for (let i = 0; i < size; i++) {
-            totalCases = totalCases + parseInt(sheetData[i].new_cases);
-            totalRecovered = totalRecovered + parseInt(sheetData[i].recovered);
-            totalDeath = totalDeath + parseInt(sheetData[i].death);
-            activeCases[i] = totalCases - totalRecovered - totalDeath;
-
-            if (i > 0) {
-               differences = activeCases[i] - activeCases[i - 1];
-            }
-
             covidData.push({
-               date: sheetData[i].date,
-               new_case: parseInt(sheetData[i].new_cases),
-               recovered: parseInt(sheetData[i].recovered),
-               death: parseInt(sheetData[i].death),
-               totalCases: totalCases,
-               totalRecovered: totalRecovered,
-               totalDeath: totalDeath,
-               activeCases: activeCases[i],
-               differences: differences
+               
             });
          }
-         getDataSize(covidData);
+
+         if(data[0].month == "january") {
+            janDateElem[0].innerHTML = data[0].date;
+            janEventElem[0].innerHTML = data[0].events;
+         }
+         
+         //getDataSize(covidData);
       }
 
-      function getDataSize(data) {
-         const size = Object.keys(data).length;
+      function getDataSize(covidData) {
+         const size = Object.keys(covidData).length;
 
          for (let i = 0; i < size; i++) {
-            createRow(data[i], i + 1);
+            createRow(covidData[i], i + 1);
          }
+         //drawGraph(covidData);
       }
 
-      function createRow(data, num) {
+      function createRow(covidData, num) {
          // since its a jquery table, gotta follow their method on adding new rows
-         var t = $('#datatable-default').DataTable();
-         var counter = 1;
+         const t = $('#datatable-tabletools').DataTable();
+
          t.row.add([
-            num,
-            data.date,
-            data.new_case,
-            data.recovered,
-            data.death,
-            data.totalCases,
-            data.totalRecovered,
-            data.totalDeath,
-            data.activeCases,
-            data.differences
+            
          ]).draw("full-reset");
-      }      
+      }
    </script>
 
    <!-- Vendor -->
@@ -233,6 +277,9 @@
    <script src="./assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
    <script src="./assets/vendor/magnific-popup/magnific-popup.js"></script>
    <script src="./assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+
+   <!-- Specific Page Vendor -->
+   <script src="assets/vendor/jquery-autosize/jquery.autosize.js"></script>
 
    <!-- Specific Page Vendor -->
    <script src="./assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
