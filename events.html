@@ -133,7 +133,7 @@
                </ul>
                <div class="tab-content">
                   <div id="covidEvents" class="tab-pane active">               
-                     <h4 class="mb-xlg">Timeline</h4>
+                     <h3 class="mb-xlg">Timeline</h3>
                      <div class="timeline timeline-simple mt-xlg mb-md">
                         <div class="tm-body">
 
@@ -142,9 +142,9 @@
                            </div>
                            <ol id="janList" class="tm-items">
                               <li class="janItem">
-                                 <div class="tm-box">
-                                    <p class="janDate text-muted mb-none">date here</p>
-                                    <p class="janEvent"> event here </p>
+                                 <div class="tm-box col-md-6 col-xs-6">
+                                    <p class="date text-muted mb-none"> </p>
+                                    <p class="event"> </p>
                                  </div>
                               </li>
                            </ol>
@@ -154,9 +154,9 @@
                            </div>
                            <ol id="febList" class="tm-items">
                               <li class="febItem">
-                                 <div class="tm-box">
-                                    <p class=" febDate text-muted mb-none">date here</p>
-                                    <p class="febEvent"> event here </p>
+                                 <div class="tm-box col-md-6 col-xs-6">
+                                    <p class="date text-muted mb-none"> </p>
+                                    <p class="event"> </p>
                                  </div>
                               </li>
                            </ol>
@@ -166,9 +166,9 @@
                            </div>
                            <ol id="marchList" class="tm-items">
                               <li class="marchItem">
-                                 <div class="tm-box">
-                                    <p class="marchDate text-muted mb-none">date here</p>
-                                    <p class="marchEvent"> event here </p>
+                                 <div class="tm-box col-md-6 col-xs-6">
+                                    <p class="date text-muted mb-none"> </p>
+                                    <p class="event"> </p>
                                  </div>
                               </li>
                            </ol>
@@ -178,9 +178,9 @@
                            </div>
                            <ol id="aprilList" class="tm-items">
                               <li class="aprilItem">
-                                 <div class="tm-box">
-                                    <p class="aprilDate text-muted mb-none">date here</p>
-                                    <p class="aprilEvent"> event here </p>
+                                 <div class="tm-box col-md-6 col-xs-6">
+                                    <p class="date text-muted mb-none"> </p>
+                                    <p class="event"> </p>
                                  </div>
                               </li>
                            </ol>
@@ -208,16 +208,14 @@
       const marchItemElem = document.getElementsByClassName("marchItem");
       const aprilItemElem = document.getElementsByClassName("aprilItem");
 
-      const janDateElem = document.getElementsByClassName("janDate text-muted mb-none");
-      const febDateElem = document.getElementsByClassName("febDate text-muted mb-none");
-      const marchDateElem = document.getElementsByClassName("marchDate text-muted mb-none");
-      const aprilDateElem = document.getElementsByClassName("aprilDate text-muted mb-none");
+      const dateElem = document.getElementsByClassName("date text-muted mb-none");      
+      const eventElem = document.getElementsByClassName("event");
       
-      const janEventElem = document.getElementsByClassName("janEvent");
-      const febEventElem = document.getElementsByClassName("febEvent");
-      const marchEventElem = document.getElementsByClassName("marchEvent");
-      const aprilEventElem = document.getElementsByClassName("aprilEvent");
-      
+      let febFlag = false;
+      let marchFlag = false;
+      let aprilFlag = false;
+      let mayFlag = false;
+
       const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1jYmfWfwL2Xz8ENmJRqakI1GQ1GQIxnicg6Zsh8JUMyo/edit?usp=sharing';
 
       window.addEventListener('DOMContentLoaded', init);
@@ -233,39 +231,60 @@
 
       function processData(data, tabletop) {
          let size = data.length;
-         let covidData = [];
-
-         console.log(data)
-         for (let i = 0; i < size; i++) {
-            covidData.push({
-               
-            });
-         }
-
-         if(data[0].month == "january") {
-            janDateElem[0].innerHTML = data[0].date;
-            janEventElem[0].innerHTML = data[0].events;
-         }
-         
-         //getDataSize(covidData);
-      }
-
-      function getDataSize(covidData) {
-         const size = Object.keys(covidData).length;
+         //console.log(data);
 
          for (let i = 0; i < size; i++) {
-            createRow(covidData[i], i + 1);
-         }
-         //drawGraph(covidData);
+            displayEvent(data[i], i);
+         }       
       }
 
-      function createRow(covidData, num) {
-         // since its a jquery table, gotta follow their method on adding new rows
-         const t = $('#datatable-tabletools').DataTable();
-
-         t.row.add([
-            
-         ]).draw("full-reset");
+      function displayEvent(data, i) {
+         switch(data.month) {
+            case "january":
+                if (i > 0) {
+                  const clone = janItemElem[0].cloneNode(true);
+                  janListElem.appendChild(clone);                  
+               } 
+               dateElem[i].innerHTML = data.date;
+               eventElem[i].innerHTML = data.events;
+               break;
+            case "february":
+               if (febFlag == true) {
+                  const clone = febItemElem[0].cloneNode(true);
+                  febListElem.appendChild(clone);
+               }
+               dateElem[i].innerHTML = data.date;
+               eventElem[i].innerHTML = data.events;
+               febFlag = true;
+               break; 
+            case "march":
+               if (marchFlag == true) {
+                  const clone = marchItemElem[0].cloneNode(true);
+                  marchListElem.appendChild(clone);
+               }
+               dateElem[i].innerHTML = data.date;
+               eventElem[i].innerHTML = data.events;
+               marchFlag = true;
+               break; 
+            case "april":
+               if (aprilFlag == true) {
+                  const clone = aprilItemElem[0].cloneNode(true);
+                  aprilListElem.appendChild(clone);
+               }
+               dateElem[i].innerHTML = data.date;
+               eventElem[i].innerHTML = data.events;
+               aprilFlag = true;
+               break; 
+            /* case "may":
+               if (mayFlag == true) {
+                  const clone = febItemElem[0].cloneNode(true);
+                  febListElem.appendChild(clone);
+               }
+               dateElem[i].innerHTML = data.date;
+               eventElem[i].innerHTML = data.events;
+               mayFlag = true;
+               break;  */
+         }
       }
    </script>
 
