@@ -515,7 +515,7 @@
          let today = new Date();
          const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
          const mcoStarts = new Date(2020, 2, 18); // 0 is Jan, so 2 is March
-         const mcoEnds = new Date(2020, 4, 12);
+         const mcoEnds = new Date(2020, 4, 12, 23, 59);
          const daysSinceMco = Math.round(Math.abs((today - mcoStarts) / oneDay));
          const daysTillMco = Math.round(Math.abs((mcoEnds - today) / oneDay));
 
