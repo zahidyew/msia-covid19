@@ -170,20 +170,20 @@
                   </div>
 
                   <div id="covidGraphs" class="tab-pane">
-                     <!-- <section class="panel panel-featured">
+                     <section class="panel panel-featured">
                         <header class="panel-heading">
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
                   
-                           <h2 class="panel-title">New Cases, Recoveries & Deaths</h2>
-                           <p class="panel-subtitle">A bar graph to visualize ...</p>
+                           <h2 class="panel-title">Total Cases in Each State</h2>
+                           <p class="panel-subtitle">By default only the top 5 states are shown. Please click the legend to show/hide each state.</p>
                         </header>
                         <div class="panel-body">
-                           <!-- Content here: the graph to be drawn
+                           <!-- Content here: the graph to be drawn -->
                            <div class="charts" id="chartdiv"></div>
                         </div>
-                     </section><br> -->
+                     </section><br> 
                   </div>
 
                   <div id="covidMaps" class="tab-pane">
@@ -197,7 +197,7 @@
                            <p class="panel-subtitle">A bar graph to visualize ...</p>
                         </header>
                         <div class="panel-body">
-                           <!-- Content here: the graph to be drawn
+                           Content here: the graph to be drawn
                            <div class="charts" id="chartdiv"></div>
                         </div>
                      </section><br> -->
@@ -212,10 +212,10 @@
    </section>
 
    <!-- Graphing Resources -->
-   <!-- <script src="./assets/vendor/amcharts/core.js"></script>
+   <script src="./assets/vendor/amcharts/core.js"></script>
    <script src="./assets/vendor/amcharts/charts.js"></script>
    <script src="./assets/vendor/amcharts/themes/animated.js"></script>
-   <script src="./assets/vendor/amcharts/themes/patterns.js"></script> -->
+   <script src="./assets/vendor/amcharts/themes/patterns.js"></script>
 
    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
    <script>
@@ -267,7 +267,7 @@
          for (let i = 0; i < size; i++) {
             createRow(covidData[i], i + 1);
          }
-         //drawGraph(covidData);
+         drawGraph(covidData);
       }
 
       function createRow(covidData, num) {
@@ -297,7 +297,7 @@
          ]).draw("full-reset");
       }
 
-      /* function drawGraph(data) {
+      function drawGraph(data) {
          am4core.useTheme(am4themes_patterns);
          am4core.useTheme(am4themes_animated);
 
@@ -308,22 +308,65 @@
          chart.data = data;
          xAxis.renderer.minGridDistance = 50;
 
-         const graph1 = createGraph(chart, "line", "New Cases", "dv", "date", "new_case", "default");
-         const graph2 = createGraph(chart, "line", "Recovered", "dv", "date", "recovered", "#32CD32");
-         const graph3 = createGraph(chart, "line", "Deaths", "dv", "date", "death", "#DC143C");
+         const graph1 = createGraph(chart, "line", "Selangor", "dv", "date", "selangor", "default");
+         const graph2 = createGraph(chart, "line", "Kuala Lumpur", "dv", "date", "kuala_lumpur", "default");
+         const graph3 = createGraph(chart, "line", "Johor", "dv", "date", "johor", "default");
+         const graph4 = createGraph(chart, "line", "Sarawak", "dv", "date", "sarawak", "default");
+         const graph5 = createGraph(chart, "line", "Negeri Sembilan", "dv", "date", "negeri_sembilan", "default");
+         const graph6 = createGraph(chart, "line", "Sabah", "dv", "date", "sabah", "default");
+         const graph7 = createGraph(chart, "line", "Pahang", "dv", "date", "pahang", "default");
+         const graph8 = createGraph(chart, "line", "Perak", "dv", "date", "perak", "default");
+         const graph9 = createGraph(chart, "line", "Melaka", "dv", "date", "melaka", "default");
+         const graph10 = createGraph(chart, "line", "Kelantan", "dv", "date", "kelantan", "default");
+         const graph11 = createGraph(chart, "line", "Penang", "dv", "date", "penang", "default");
+         const graph12 = createGraph(chart, "line", "Terengganu", "dv", "date", "terengganu", "default");
+         const graph13 = createGraph(chart, "line", "Kedah", "dv", "date", "kedah", "default");
+         const graph14 = createGraph(chart, "line", "Putrajaya", "dv", "date", "putrajaya", "default");
+         const graph15 = createGraph(chart, "line", "Perlis", "dv", "date", "perlis", "default");
+         const graph16 = createGraph(chart, "line", "Labuan", "dv", "date", "labuan", "default");
 
          // Add scrollbar
          chart.scrollbarX = new am4charts.XYChartScrollbar();
          chart.scrollbarX.series.push(graph1);
          chart.scrollbarX.series.push(graph2);
-         chart.scrollbarX.series.push(graph3);
+         chart.scrollbarX.series.push(graph3); 
+         chart.scrollbarX.series.push(graph4); 
+         chart.scrollbarX.series.push(graph5); 
+         chart.scrollbarX.series.push(graph6); 
+         chart.scrollbarX.series.push(graph7); 
+         chart.scrollbarX.series.push(graph8); 
+         chart.scrollbarX.series.push(graph9); 
+         chart.scrollbarX.series.push(graph10); 
+         chart.scrollbarX.series.push(graph11); 
+         chart.scrollbarX.series.push(graph12); 
+         chart.scrollbarX.series.push(graph13); 
+         chart.scrollbarX.series.push(graph14); 
+         chart.scrollbarX.series.push(graph15); 
+         chart.scrollbarX.series.push(graph16); 
 
          // Add cursor
          chart.cursor = new am4charts.XYCursor();
          chart.cursor.xAxis = xAxis;
          chart.legend = new am4charts.Legend();
-         //chart.cursor.snapToSeries = series;         
-         //series2.hidden = true;
+
+         graph6.hidden = true;
+         graph7.hidden = true;
+         graph8.hidden = true;
+         graph9.hidden = true;
+         graph10.hidden = true;
+         graph11.hidden = true;
+         graph12.hidden = true;
+         graph13.hidden = true;
+         graph14.hidden = true;
+         graph15.hidden = true;
+         graph16.hidden = true;
+         //chart.cursor.snapToSeries = series;    
+         /* for(let i = 6; i < 17; i++) {
+            let a = "graph" + i;
+
+            a.hidden = true;
+            console.log(a)
+         }  */    
       }
 
       function createGraph(chart, type, cName, xyType, xAxis, yAxis, color) {
@@ -360,7 +403,7 @@
             graph.stroke = am4core.color(color);
 
          return graph;
-      } */
+      }
    </script>
 
    <!-- Vendor -->

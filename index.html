@@ -220,7 +220,7 @@
                            </div>
                   
                            <h2 class="panel-title">New Cases, Recoveries & Deaths</h2>
-                           <p class="panel-subtitle">A bar graph to visualize ...</p>
+                           <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
                         <div class="panel-body">
                            <!-- Content here: the graph to be drawn -->
@@ -235,7 +235,7 @@
                            </div>
                      
                            <h2 class="panel-title">New Cases vs Total Cases</h2>
-                           <p class="panel-subtitle">A bar graph to visualize ...</p>
+                           <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
                         <div class="panel-body">
                            <!-- Content here: the graph to be drawn -->
@@ -249,8 +249,8 @@
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
                      
-                           <h2 class="panel-title">Active Cases, Total Cases & Total Recovered</h2>
-                           <p class="panel-subtitle">A bar graph to visualize ...</p>
+                           <h2 class="panel-title">Active Cases, Total Cases, Total Recovered & Total Deaths</h2>
+                           <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
                         <div class="panel-body">
                            <!-- Content here: the graph to be drawn -->
@@ -432,8 +432,9 @@
          xAxis.renderer.minGridDistance = 50;
 
          const graph1 = createGraph(chart, "line", "Active Cases", "dv", "date", "activeCases", "default");
-         const graph2 = createGraph(chart, "line", "Total Cases", "dv", "date", "totalCases", "#DC143C"); 
+         const graph2 = createGraph(chart, "line", "Total Cases", "dv", "date", "totalCases", "#FFFF00"); 
          const graph3 = createGraph(chart, "line", "Total Recovered", "dv", "date", "totalRecovered", "#32CD32");
+         const graph4 = createGraph(chart, "line", "Total Death", "dv", "date", "totalDeath", "#DC143C");
 
          // Add scrollbar
          chart.scrollbarX = new am4charts.XYChartScrollbar();
@@ -445,6 +446,7 @@
          chart.scrollbarX.series.push(graph1);
          chart.scrollbarX.series.push(graph2);
          chart.scrollbarX.series.push(graph3);
+         chart.scrollbarX.series.push(graph4);
 
          // Add cursor
          chart.cursor = new am4charts.XYCursor();

@@ -41,9 +41,6 @@
    <!-- Theme Custom CSS -->
    <link rel="stylesheet" href="./assets/stylesheets/theme-custom.css">
 
-   <!-- CSS for Graphs -->
-   <link rel="stylesheet" href="./assets/stylesheets/styles-graphs.css">
-
    <!-- Head Libs -->
    <script src="./assets/vendor/modernizr/modernizr.js"></script>
 
@@ -185,6 +182,18 @@
                               </li>
                            </ol>
 
+                           <div class="tm-title">
+                              <h3 class="h5 text-uppercase">May 2020</h3>
+                           </div>
+                           <ol id="mayList" class="tm-items">
+                              <li class="mayItem">
+                                 <div class="tm-box col-md-6 col-xs-6">
+                                    <p class="date text-muted mb-none"> </p>
+                                    <p class="event"> </p>
+                                 </div>
+                              </li>
+                           </ol>
+
                         </div>
                      </div>
                   </div>
@@ -202,11 +211,13 @@
       const febListElem = document.getElementById("febList");
       const marchListElem = document.getElementById("marchList");
       const aprilListElem = document.getElementById("aprilList");
+      const mayListElem = document.getElementById("mayList");
 
       const janItemElem = document.getElementsByClassName("janItem");
       const febItemElem = document.getElementsByClassName("febItem");
       const marchItemElem = document.getElementsByClassName("marchItem");
       const aprilItemElem = document.getElementsByClassName("aprilItem");
+      const mayItemElem = document.getElementsByClassName("mayItem");
 
       const dateElem = document.getElementsByClassName("date text-muted mb-none");      
       const eventElem = document.getElementsByClassName("event");
@@ -275,15 +286,15 @@
                eventElem[i].innerHTML = data.events;
                aprilFlag = true;
                break; 
-            /* case "may":
+            case "may":
                if (mayFlag == true) {
-                  const clone = febItemElem[0].cloneNode(true);
-                  febListElem.appendChild(clone);
+                  const clone = mayItemElem[0].cloneNode(true);
+                  mayListElem.appendChild(clone);
                }
                dateElem[i].innerHTML = data.date;
                eventElem[i].innerHTML = data.events;
                mayFlag = true;
-               break;  */
+               break;
          }
       }
    </script>
