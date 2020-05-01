@@ -224,10 +224,9 @@
 
    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
    <script>
-     //window.addEventListener('DOMContentLoaded', getRequest("https://cors-anywhere.herokuapp.com/https://thevirustracker.com/free-api?global=stats", "summary"));
-     window.addEventListener('DOMContentLoaded', getRequest("https://thevirustracker.com/free-api?global=stats", "summary"));
-     //window.addEventListener('DOMContentLoaded', getRequest("https://cors-anywhere.herokuapp.com/https://api.thevirustracker.com/free-api?countryTotals=ALL", "table"));
-     window.addEventListener('DOMContentLoaded', getRequest("https://api.thevirustracker.com/free-api?countryTotals=ALL", "table"));
+     window.addEventListener('DOMContentLoaded', getRequest("https://my-bypass-cors.herokuapp.com/bypass?url=https://thevirustracker.com/free-api?global=stats", "summary"));
+     //window.addEventListener('DOMContentLoaded', getRequest("https://api.thevirustracker.com/free-api?countryTotals=ALL", "table"));
+     window.addEventListener('DOMContentLoaded', getRequest("https://api.covid19api.com/summary", "table"));
 
      //https://api.covid19api.com/summary
 
@@ -235,12 +234,11 @@
          fetch(url, {
             method: 'GET',
             headers: {
-               'Content-Type': 'application/json',
             },
          })
             .then((response) => response.json())
             .then((data) => {
-               console.log('Success:', data);
+               //console.log('Success:', data);
 
                action == "summary" ? (displaySummary(data)) :
                action == "table" ? (getDataSize(data)) :
@@ -253,30 +251,47 @@
 
       function getDataSize(data) {
          // -1 just for this api, as it has "stat" as the last item, which is not what we want
-         const size = Object.keys(data.countryitems[0]).length - 1; 
-         console.log('Success:', size);
+         //const size = Object.keys(data.countryitems[0]).length - 1; 
+
+         const size = Object.keys(data.Countries).length;
+         let num = 1;
+         //console.log('Success:', size);
          //console.log('Success:', data.countryitems[0][1]);
 
-         for (let i = 1; i < size; i++) {
+         for (let i = 0; i < size; i++) {
+            if(data.Countries[i].TotalConfirmed == 0) {
+               // if a country does not have any case, then dont show
+            }else{
+               createRow(data.Countries[i], num);
+               num++;
+            }
+         }
+
+         /* for (let i = 1; i < size; i++) {
             createRow(data.countryitems[0][i], i + 1);
-         } 
+         } */ 
       }
 
       function createRow(data, num) {
          const t = $('#datatable-tabletools').DataTable();
-         //const activeCases = data.TotalConfirmed - data.TotalRecovered - data.TotalDeaths;
+         const activeCases = data.TotalConfirmed - data.TotalRecovered - data.TotalDeaths;
 
          t.row.add([
             num,
-            data.title,
+            data.Country,
+            //data.title,
             //formatNumber(data.total_new_cases_today, '0,0'),
             //formatNumber(data.NewRecovered, '0,0'),
             //formatNumber(data.total_new_deaths_today, '0,0'),
             //`${data.TotalConfirmed} (${data.NewConfirmed})`,
-            formatNumber(data.total_cases, '0,0'),
+            /* formatNumber(data.total_cases, '0,0'),
             formatNumber(data.total_recovered, '0,0'),
             formatNumber(data.total_deaths, '0,0'),
-            formatNumber(data.total_active_cases, '0,0'),
+            formatNumber(data.total_active_cases, '0,0'), */
+            formatNumber(data.TotalConfirmed, '0,0'),
+            formatNumber(data.TotalRecovered, '0,0'),
+            formatNumber(data.TotalDeaths, '0,0'),
+            formatNumber(activeCases, '0,0'),
          ]).draw("full-reset");
       }
 
