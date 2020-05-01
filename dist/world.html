@@ -188,13 +188,13 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-6 col-xs-6">
+                              <h5 class="text-dark">Affected Countries:</h5>
+                              <h5 id="affected"></h5>
+                           </div>
+                           <div class="col-md-6 col-xs-6">
                               <h5 class="text-dark">Days since the first reported Covid-19 case on 8 Dec 2019:</h5>
                               <h5 id="days"></h5>
-                           </div>
-                           <!-- <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Days until MCO ends on 12 May:</h5>
-                              <h5 id="mcoEnds"></h5>
-                           </div> -->
+                           </div>                         
                         </div>
                      </div>
                      <table class="table table-bordered table-striped col-md-12 col-xs-12" id="datatable-tabletools">
@@ -202,9 +202,9 @@
                            <tr>
                               <th>No</th>
                               <th class="col-sm-1">Country</th>
-                              <th>New Cases</th>
-                              <th>Recovered</th>
-                              <th>Death</th>
+                              <!-- <th>New Cases</th> -->
+                              <!-- <th>Recovered</th> -->
+                              <!-- <th>Death</th> -->
                               <th>Total Cases</th>
                               <th>Total Recovered</th>
                               <th>Total Deaths</th>
@@ -224,10 +224,15 @@
 
    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
    <script>
-     window.addEventListener('DOMContentLoaded', getRequest);
+     //window.addEventListener('DOMContentLoaded', getRequest("https://cors-anywhere.herokuapp.com/https://thevirustracker.com/free-api?global=stats", "summary"));
+     window.addEventListener('DOMContentLoaded', getRequest("https://thevirustracker.com/free-api?global=stats", "summary"));
+     //window.addEventListener('DOMContentLoaded', getRequest("https://cors-anywhere.herokuapp.com/https://api.thevirustracker.com/free-api?countryTotals=ALL", "table"));
+     window.addEventListener('DOMContentLoaded', getRequest("https://api.thevirustracker.com/free-api?countryTotals=ALL", "table"));
 
-      function getRequest() {
-         fetch('https://api.covid19api.com/summary', {
+     //https://api.covid19api.com/summary
+
+      function getRequest(url, action) {
+         fetch(url, {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',
@@ -236,7 +241,10 @@
             .then((response) => response.json())
             .then((data) => {
                console.log('Success:', data);
-               getDataSize(data);
+
+               action == "summary" ? (displaySummary(data)) :
+               action == "table" ? (getDataSize(data)) :
+               false;
             })
             .catch((error) => {
                console.error('Error:', error);
@@ -244,34 +252,37 @@
       }
 
       function getDataSize(data) {
-         const size = Object.keys(data.Countries).length;
+         // -1 just for this api, as it has "stat" as the last item, which is not what we want
+         const size = Object.keys(data.countryitems[0]).length - 1; 
+         console.log('Success:', size);
+         //console.log('Success:', data.countryitems[0][1]);
 
-         displaySummary(data.Global);
-
-         for (let i = 0; i < size; i++) {
-            createRow(data.Countries[i], i + 1);
+         for (let i = 1; i < size; i++) {
+            createRow(data.countryitems[0][i], i + 1);
          } 
       }
 
       function createRow(data, num) {
          const t = $('#datatable-tabletools').DataTable();
-         const activeCases = data.TotalConfirmed - data.TotalRecovered - data.TotalDeaths;
+         //const activeCases = data.TotalConfirmed - data.TotalRecovered - data.TotalDeaths;
 
          t.row.add([
             num,
-            data.Country,
-            formatNumber(data.NewConfirmed, '0,0'),
-            formatNumber(data.NewRecovered, '0,0'),
-            formatNumber(data.NewDeaths, '0,0'),
+            data.title,
+            //formatNumber(data.total_new_cases_today, '0,0'),
+            //formatNumber(data.NewRecovered, '0,0'),
+            //formatNumber(data.total_new_deaths_today, '0,0'),
             //`${data.TotalConfirmed} (${data.NewConfirmed})`,
-            formatNumber(data.TotalConfirmed, '0,0'),
-            formatNumber(data.TotalRecovered, '0,0'),
-            formatNumber(data.TotalDeaths, '0,0'),
-            formatNumber(activeCases, '0,0'),
+            formatNumber(data.total_cases, '0,0'),
+            formatNumber(data.total_recovered, '0,0'),
+            formatNumber(data.total_deaths, '0,0'),
+            formatNumber(data.total_active_cases, '0,0'),
          ]).draw("full-reset");
       }
 
       function displaySummary(data) {
+         const result = data.results[0];
+         //console.log(result);
          const worldPopulation = 7646314700;
          const casesElem = document.getElementById("cases");
          const nCasesElem = document.getElementById("nCases");
@@ -286,16 +297,17 @@
          const fatalityRateElem = document.getElementById("fatalityRate");
          const activeCasesPercentElem = document.getElementById("activeCasesPercent");
          const daysElem = document.getElementById("days");
+         const affectedElem = document.getElementById("affected");
 
-         let activeCases = data.TotalConfirmed - data.TotalRecovered - data.TotalDeaths;
-         let recovRate = data.TotalRecovered / data.TotalConfirmed * 100;
-         let fatalityRate = data.TotalDeaths / data.TotalConfirmed * 100;
-         let activeCasesPercent = activeCases / data.TotalConfirmed * 100;
-         let infected = data.TotalConfirmed / worldPopulation * 100;
+         let activeCases = result.total_cases - result.total_recovered - result.total_deaths;
+         let recovRate = result.total_recovered / result.total_cases * 100;
+         let fatalityRate = result.total_deaths / result.total_cases * 100;
+         let activeCasesPercent = activeCases / result.total_cases * 100;
+         let infected = result.total_cases / worldPopulation * 100;
 
-         casesElem.innerHTML = formatNumber(data.TotalConfirmed, '0,0');
-         recoveredElem.innerHTML = formatNumber(data.TotalRecovered, '0,0');
-         deathsElem.innerHTML = formatNumber(data.TotalDeaths, '0,0');
+         casesElem.innerHTML = formatNumber(result.total_cases, '0,0');
+         recoveredElem.innerHTML = formatNumber(result.total_recovered, '0,0');
+         deathsElem.innerHTML = formatNumber(result.total_deaths, '0,0');
          activeCasesElem.innerHTML = formatNumber(activeCases, '0,0');
          recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
          fatalityRateElem.innerHTML = (fatalityRate).toFixed(2) + "%";
@@ -309,25 +321,26 @@
          let daysSinceCovid = Math.round(Math.abs((today - covidStarts) / oneDay));
 
          daysElem.innerHTML = "" + daysSinceCovid;
+         affectedElem.innerHTML = result.total_affected_countries;
 
-         /* data[latest].new_case > 0 ?
-            (casesElem.innerHTML = `${data[latest].totalCases} (&#8679;${data[latest].new_case})`) :
-            (casesElem.innerHTML = `${data[latest].totalCases} (${data[latest].new_case})`)
+         /* result[latest].new_case > 0 ?
+            (casesElem.innerHTML = `${result[latest].totalCases} (&#8679;${result[latest].new_case})`) :
+            (casesElem.innerHTML = `${result[latest].totalCases} (${result[latest].new_case})`)
 
-         data[latest].recovered > 0 ?
-            (recoveredElem.innerHTML = `${data[latest].totalRecovered} (&#8679;${data[latest].recovered})`) :
-            (recoveredElem.innerHTML = `${data[latest].totalRecovered} (${data[latest].recovered})`);
+         result[latest].recovered > 0 ?
+            (recoveredElem.innerHTML = `${result[latest].totalRecovered} (&#8679;${result[latest].recovered})`) :
+            (recoveredElem.innerHTML = `${result[latest].totalRecovered} (${result[latest].recovered})`);
 
-         data[latest].death > 0 ?
-            (deathsElem.innerHTML = `${data[latest].totalDeath} (&#8679;${data[latest].death})`) :
-            (deathsElem.innerHTML = `${data[latest].totalDeath} (${data[latest].death})`);
+         result[latest].death > 0 ?
+            (deathsElem.innerHTML = `${result[latest].totalDeath} (&#8679;${result[latest].death})`) :
+            (deathsElem.innerHTML = `${result[latest].totalDeath} (${result[latest].death})`);
 
-         data[latest].differences > 0 ? 
-            (differencesElem.value = `&#8679;${data[latest].differences}`) :
-            (  a = data[latest].differences.toString(),
+         result[latest].differences > 0 ? 
+            (differencesElem.value = `&#8679;${result[latest].differences}`) :
+            (  a = result[latest].differences.toString(),
                differencesElem.value = `&#8681;${a.substr(1)}`);
 
-         activeCasesElem.innerHTML = `${data[latest].activeCases} (${differencesElem.value})`;*/
+         activeCasesElem.innerHTML = `${result[latest].activeCases} (${differencesElem.value})`;*/
       }
 
       function formatNumber(num, style) {
