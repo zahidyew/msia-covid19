@@ -190,10 +190,10 @@
                               <h5 class="text-dark">Days since MCO:</h5>
                               <h5 id="mcoDays"></h5>
                            </div>
-                           <div class="col-md-6 col-xs-6">
+                           <!-- <div class="col-md-6 col-xs-6">
                               <h5 class="text-dark">Days until MCO ends (12 May):</h5>
                               <h5 id="mcoEnds"></h5>
-                           </div>
+                           </div> -->
                         </div>
                      </div>
 
@@ -510,7 +510,7 @@
          const fatalityRateElem = document.getElementById("fatalityRate");
          const activeCasesPercentElem = document.getElementById("activeCasesPercent");
          const mcoDaysElem = document.getElementById("mcoDays");
-         const mcoEndsElem = document.getElementById("mcoEnds");
+         //const mcoEndsElem = document.getElementById("mcoEnds");
          const latest = size - 1;
 
          let recovRate = data[latest].totalRecovered / data[latest].totalCases * 100;
@@ -521,9 +521,9 @@
          let today = new Date();
          const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
          const mcoStarts = new Date(2020, 2, 18); // 0 is Jan, so 2 is March
-         const mcoEnds = new Date(2020, 4, 12, 23, 59);
+         //const mcoEnds = new Date(2020, 4, 12, 23, 59);
          const daysSinceMco = Math.round(Math.abs((today - mcoStarts) / oneDay));
-         const daysTillMco = Math.round(Math.abs((mcoEnds - today) / oneDay));
+         //const daysTillMco = Math.round(Math.abs((mcoEnds - today) / oneDay));
 
          infectedElem.innerHTML = "Approx. " + (data[latest].populationInfected).toFixed(3) + "%";
          recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
@@ -554,7 +554,7 @@
          activeCasesElem.innerHTML = `${data[latest].activeCases} (${differencesElem.value})`;
 
          mcoDaysElem.innerHTML = "" + daysSinceMco;
-         mcoEndsElem.innerHTML = "" + daysTillMco;
+         //mcoEndsElem.innerHTML = "" + daysTillMco;
       }
    </script>
 
