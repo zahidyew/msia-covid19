@@ -162,7 +162,7 @@
                            </div>
                         </div>
                      </div>
-
+                     
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-3 col-sm-3 col-xs-6">
@@ -215,7 +215,7 @@
                               <th>Active Cases</th>
                               <th>Difference</th>
                               <th>Infected %</th>
-                              <!-- <th>Growth Factor</th> -->
+                              <th>Growth Factor</th>
                            </tr>
                         </thead>
                         <tbody></tbody>
@@ -228,6 +228,7 @@
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
+                  
                            <h2 class="panel-title">New Cases, Recoveries & Deaths</h2>
                            <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
@@ -242,6 +243,7 @@
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
+                     
                            <h2 class="panel-title">New Cases vs Total Cases</h2>
                            <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
@@ -256,6 +258,7 @@
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
+                     
                            <h2 class="panel-title">Active Cases, Total Cases, Total Recovered & Total Deaths</h2>
                            <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
@@ -283,82 +286,65 @@
    <script src="./assets/vendor/amcharts/themes/animated.js"></script>
    <script src="./assets/vendor/amcharts/themes/patterns.js"></script>
 
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>      
    <script>
-      const API_URL = 'https://covid19-api.org/api/timeline/MY';
+      const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1arFbupT4hbnCO2FL0C8H5IFleJxEwICSZgH5EjY4554/edit#gid=0';
       const population = 32255684;
 
-      //window.addEventListener('DOMContentLoaded', getRequest(API_URL));
-      getRequest(API_URL);
-      
-      // use fetch api to get the covid data from an API
-      function getRequest(url) {
-         fetch(url, {
-            method: 'GET',
-            headers: {
-            },
+      window.addEventListener('DOMContentLoaded', init);
+
+      // init Tabletop by passing sheet url to get data from the sheet, then call the processData func
+      function init() {
+         Tabletop.init({
+            key: publicSpreadsheetUrl,
+            callback: processData,
+            simpleSheet: true
          })
-            .then((response) => response.json())
-            .then((data) => {
-               //console.log(data);
-               processData(data);
-            })
-            .catch((error) => {
-               console.error('Error:', error);
-            });
       }
 
-      // process the raw data fetched from the API
-      function processData(data) {
-         let size = data.length;
-         let covidData = [];
-         let newCases = 0, recovered = 0, death = 0, differences = 0, populationInfected = 0;
-         let totalCases = [], totalRecovered = [], totalDeath = [], activeCases = [];
-         let counter = 0;
-         let date;
+      function processData(data, tabletop) {
+         let sheetData = data;
+         let size = sheetData.length;
+         let covidData = [], activeCases = [], newCases = [];
+         let totalCases = 0, totalRecovered = 0, totalDeath = 0, populationInfected = 0, differences = 0, growthFactor = 0;
 
-         for (let i = size-1; i >= 0; i--) {
-         //for (let i = 0; i < size; i++) {
-            totalCases[counter] = data[i].cases;
-            totalRecovered[counter] = data[i].recovered;
-            totalDeath[counter] = data[i].deaths;
-            activeCases[counter] = totalCases[counter] - totalRecovered[counter] - totalDeath[counter];
-            populationInfected = parseFloat((totalCases[counter] / population * 100).toFixed(6));
-            date = changeDateFormat(data[i].last_update.substring(0, 10))
+         for (let i = 0; i < size; i++) {
+            newCases[i] = sheetData[i].new_cases;
+            totalCases = totalCases + parseInt(sheetData[i].new_cases);
+            totalRecovered = totalRecovered + parseInt(sheetData[i].recovered);
+            totalDeath = totalDeath + parseInt(sheetData[i].death);
+            activeCases[i] = totalCases - totalRecovered - totalDeath;
+            populationInfected = parseFloat((totalCases / population * 100).toFixed(6));
 
-            // if it is not the first day, then we need to compare to the previous day
-            if (counter > 0) {
-               newCases = totalCases[counter] - totalCases[counter - 1];
-               recovered = totalRecovered[counter] - totalRecovered[counter - 1];
-               death = totalDeath[counter] - totalDeath[counter - 1];
-               differences = activeCases[counter] - activeCases[counter - 1];
-               //newCases[i - 1] == 0 ? (growthFactor = "NaN") : growthFactor = parseFloat((newCases[i] / newCases[i - 1]).toFixed(3));
+            if (i > 0) {
+               differences = activeCases[i] - activeCases[i - 1];
+               newCases[i - 1] == 0 ? (growthFactor = "NaN") : growthFactor = parseFloat((newCases[i] / newCases[i - 1]).toFixed(3));
             }
 
-            // covidData is an array of objects
             covidData.push({
-               totalCases: totalCases[counter],
-               totalRecovered: totalRecovered[counter],
-               totalDeath: totalDeath[counter],
-               new_case: newCases,
-               recovered: recovered,
-               death: death,
-               activeCases: activeCases[counter],
+               date: sheetData[i].date,
+               new_case: parseInt(sheetData[i].new_cases),
+               recovered: parseInt(sheetData[i].recovered),
+               death: parseInt(sheetData[i].death),
+               totalCases: totalCases,
+               totalRecovered: totalRecovered,
+               totalDeath: totalDeath,
+               activeCases: activeCases[i],
                differences: differences,
                populationInfected: populationInfected,
-               date: date
-               /*growthFactor: growthFactor */
+               growthFactor: growthFactor
             });
-            counter++;
          }
-         //console.log(covidData);
-         useData(covidData, size);
+         getDataSize(covidData);
       }
 
-      function useData(data, size) {
+      function getDataSize(data) {
+         const size = Object.keys(data).length;
+
          displaySummary(data, size);
 
          for (let i = 0; i < size; i++) {
-            createRow(data[i], i + 1);
+            createRow(data[i], i+1);
          }
 
          drawGraph(data);
@@ -386,20 +372,19 @@
             data.totalDeath,
             data.activeCases,
             diff,
-            data.populationInfected + "%"
-            //data.growthFactor
+            data.populationInfected + "%",
+            data.growthFactor
          ]).draw("full-reset");
-      }
+      }      
 
-      // draw line graph for new cases, recoveries & deaths vs date
       function drawGraph(data) {
          am4core.useTheme(am4themes_patterns);
          am4core.useTheme(am4themes_animated);
-
+         
          const chart = am4core.create("chartdiv", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.DateAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
+         
          chart.data = data;
          xAxis.renderer.minGridDistance = 50;
 
@@ -420,8 +405,7 @@
          //chart.cursor.snapToSeries = series;         
          //series2.hidden = true;
       }
-
-      // draw line graph for total infected vs total cases
+     
       function drawGraph2(data) {
          const chart = am4core.create("chartdiv2", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.ValueAxis());
@@ -430,7 +414,7 @@
          chart.data = data;
          xAxis.renderer.minGridDistance = 50;
          //yAxis.logarithmic = true;
-
+         
          const graph = createGraph(chart, "line", "Total Infected", "vv", "totalCases", "new_case", "default");
          //const graph2 = createGraph(chart, "line", "Total Infected", "vv", "totalCases", "recovered", "default");
 
@@ -442,24 +426,23 @@
          // Add cursor & disable some elements
          chart.cursor = new am4charts.XYCursor();
          //chart.legend = new am4charts.Legend();
-         chart.cursor.snapToSeries = graph;
+         chart.cursor.snapToSeries = graph;   
          /* chart.cursor.lineX.disabled = true;
          chart.cursor.lineY.disabled = true; */
          xAxis.cursorTooltipEnabled = false;
-         yAxis.cursorTooltipEnabled = false;
+         yAxis.cursorTooltipEnabled = false;      
       }
 
-      // draw line graph for active cases, total cases, total recovered & total death vs date
-      function drawGraph3(data) {
+      function drawGraph3(data) {         
          const chart = am4core.create("chartdiv3", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.DateAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
+         
          chart.data = data;
          xAxis.renderer.minGridDistance = 50;
 
          const graph1 = createGraph(chart, "line", "Active Cases", "dv", "date", "activeCases", "default");
-         const graph2 = createGraph(chart, "line", "Total Cases", "dv", "date", "totalCases", "#FFFF00");
+         const graph2 = createGraph(chart, "line", "Total Cases", "dv", "date", "totalCases", "#FFFF00"); 
          const graph3 = createGraph(chart, "line", "Total Recovered", "dv", "date", "totalRecovered", "#32CD32");
          const graph4 = createGraph(chart, "line", "Total Death", "dv", "date", "totalDeath", "#DC143C");
 
@@ -490,20 +473,20 @@
          false;
 
          xyType == "dv" ? (
-            graph.dataFields.dateX = xAxis,
-            graph.dataFields.valueY = yAxis,
+            graph.dataFields.dateX = xAxis, 
+            graph.dataFields.valueY = yAxis,  
             graph.tooltipText = `${cName}: {valueY}`) :
          xyType == "vv" ? (
-            graph.dataFields.valueX = xAxis,
-            graph.dataFields.valueY = yAxis,
+            graph.dataFields.valueX = xAxis, 
+            graph.dataFields.valueY = yAxis,  
             graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {valueX}`) :
          xyType == "cv" ? (
-            graph.dataFields.categoryX = xAxis,
+            graph.dataFields.categoryX = xAxis, 
             graph.dataFields.valueY = yAxis,
             graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {categoryX}`) :
          false;
 
-         graph.name = cName;
+         graph.name = cName;  
          graph.strokeWidth = 2;
          graph.minBulletDistance = 10;
          graph.tooltip.pointerOrientation = "vertical";
@@ -570,10 +553,9 @@
             (deathsElem.innerHTML = `${data[latest].totalDeath} (&#8679;${data[latest].death})`) :
             (deathsElem.innerHTML = `${data[latest].totalDeath} (${data[latest].death})`);
 
-         data[latest].differences == 0 ? (differencesElem.value = 0) :
-         data[latest].differences > 0 ?
+         data[latest].differences > 0 ? 
             (differencesElem.value = `&#8679;${data[latest].differences}`) :
-            (a = data[latest].differences.toString(),
+            (  a = data[latest].differences.toString(),
                differencesElem.value = `&#8681;${a.substr(1)}`);
 
          activeCasesElem.innerHTML = `${data[latest].activeCases} (${differencesElem.value})`;
@@ -581,31 +563,6 @@
          mcoDaysElem.innerHTML = "" + daysSinceMco;
          since1stCaseElem.innerHTML = "" + daysSince1stCase;
          //mcoEndsElem.innerHTML = "" + daysTillMco;
-      }
-
-      function changeDateFormat(date) {
-         const year = date.substring(0, 4)
-         const month = date.substring(5, 7)
-         const day = date.substring(8, 10)
-         let textMonth
-
-         month == "01" ? textMonth = "Jan" :
-         month == "02" ? textMonth = "Feb" :
-         month == "03" ? textMonth = "Mar" :
-         month == "04" ? textMonth = "Apr" :
-         month == "05" ? textMonth = "May" :
-         month == "06" ? textMonth = "Jun" :
-         month == "07" ? textMonth = "Jul" :
-         month == "08" ? textMonth = "Aug" :
-         month == "09" ? textMonth = "Sep" :
-         month == "10" ? textMonth = "Oct" :
-         month == "11" ? textMonth = "Nov" :
-         month == "12" ? textMonth = "Dec" :
-         false;
-         
-         let reformatted = day + " " + textMonth + " " + year;
-
-         return reformatted;
       }
    </script>
 
