@@ -6,7 +6,7 @@
    <!-- Basic -->
    <meta charset="UTF-8">
 
-   <title>Covid-19 Cases in Malaysia</title>
+   <title>Covid-19</title>
    <meta name="keywords" content="HTML5 Admin Template" />
    <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
    <meta name="author" content="JSOFT.net">
@@ -15,7 +15,8 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
    <!-- Web Fonts  -->
-   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+      rel="stylesheet" type="text/css">
 
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="./assets/vendor/bootstrap/css/bootstrap.css" />
@@ -62,7 +63,8 @@
                <p>Covid-19</p>
                <!-- <img src="assets/images/logo.png" height="35" alt="JSOFT Admin" /> -->
             </a>
-            <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+            <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
+               data-fire-event="sidebar-left-opened">
                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
             </div>
          </div>
@@ -77,7 +79,8 @@
                <div class="sidebar-title">
                   Navigation
                </div>
-               <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+               <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html"
+                  data-fire-event="sidebar-left-toggle">
                   <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
                </div>
             </div>
@@ -86,18 +89,18 @@
                <div class="nano-content">
                   <nav id="menu" class="nav-main" role="navigation">
                      <ul class="nav nav-main">
-                        <li class="nav-active">
+                        <li>
                            <a href="./index.html">
                               <i class="fa fa-home" aria-hidden="true"></i>
                               <span>Homepage</span>
                            </a>
                         </li>
-                        <li>
+                        <!-- <li>
                            <a href="./simpleVersion.html">
                               <i class="fa fa-circle-thin" aria-hidden="true"></i>
                               <span>Simple Version</span>
                            </a>
-                        </li>
+                        </li> -->
                         <li>
                            <a href="./states.html">
                               <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -110,7 +113,7 @@
                               <span>Key Events</span>
                            </a>
                         </li>
-                        <li>
+                        <li class="nav-active">
                            <a href="./world.html">
                               <i class="fa fa-globe" aria-hidden="true"></i>
                               <span>World Stats</span>
@@ -128,7 +131,7 @@
                <h2>Covid-19</h2>
             </header>
             <div class="tabs tabs-primary">
-               <h2>Covid-19 Cases in Malaysia</h2><br>
+               <h2 id="mainTitle">Covid-19 Cases in </h2><br>
                <ul class="nav nav-tabs nav-justified">
                   <li class="active">
                      <a href="#covidTable" data-toggle="tab" class="text-center"><i class="fa fa-table"></i> Table</a>
@@ -136,70 +139,46 @@
                   <li>
                      <a href="#covidGraphs" data-toggle="tab" class="text-center"><i class="fa fa-bar-chart-o"></i> Graphs</a>
                   </li>
-                  <!-- <li>
-                     <a href="#summary" data-toggle="tab" class="text-center"><i class="fa fa-star"></i> Summary</a>
-                  </li> -->
                </ul>
-               <div class="tab-content">
+                <div class="tab-content">
                   <div id="covidTable" class="tab-pane active">
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Cases:</h5>
-                              <h5 id="cases"> <small id="nCases"></small></h5>
+                              <h5>Total Cases:</h5>
+                              <h5 class="text-dark" id="cases"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Recovered:</h5>
-                              <h5 id="recovered"> <small id="nRecov"></small></h5>
+                              <h5>Total Recovered:</h5>
+                              <h5 class="text-dark" id="recovered"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Deaths:</h5>
-                              <h5 id="deaths"> <small id="nDeaths"></small></h5>
+                              <h5>Total Deaths:</h5>
+                              <h5 class="text-dark" id="deaths"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Active Cases:</h5>
-                              <h5 id="activeCases"> <small id="differences"></small></h5>
+                              <h5>Active Cases:</h5>
+                              <h5 class="text-dark" id="activeCases"> <small id="differences"></small></h5>
                            </div>
                         </div>
                      </div>
-                     
-                     <div class="row">
-                        <div class="col-md-12 col-xs-12">
-                           <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Population Infected:</h5>
-                              <h5 id="infected"></h5>
-                           </div>
-                           <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Recovery Rate:</h5>
-                              <h5 id="recovRate"></h5>
-                           </div>
-                           <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Fatality Rate:</h5>
-                              <h5 id="fatalityRate"></h5>
-                           </div>
-                           <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Active Cases %:</h5>
-                              <h5 id="activeCasesPercent"></h5>
-                           </div>
-                        </div>
-                     </div><br>
 
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
-                           <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Days since 1st Case (25 Jan):</h5>
-                              <h5 id="since1stCase"></h5>
+                           <div class="col-md-3 col-sm-3 col-xs-6">
+                              <h5>Active Cases %:</h5>
+                              <h5 class="text-dark" id="activeCasesPercent"></h5>
                            </div>
-                           <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Days since MCO:</h5>
-                              <h5 id="mcoDays"></h5>
+                           <div class="col-md-3 col-sm-3 col-xs-6">
+                              <h5>Recovery Rate:</h5>
+                              <h5 class="text-dark" id="recovRate"></h5>
                            </div>
-                           <!-- <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Days until MCO ends (12 May):</h5>
-                              <h5 id="mcoEnds"></h5>
-                           </div> -->
+                           <div class="col-md-3 col-sm-3 col-xs-6">
+                              <h5>Fatality Rate:</h5>
+                              <h5 class="text-dark" id="fatalityRate"></h5>
+                           </div>
                         </div>
-                     </div>
+                     </div><br>
 
                      <table class="table table-bordered table-striped col-md-12 col-xs-12" id="datatable-tabletools">
                         <thead>
@@ -214,8 +193,6 @@
                               <th>Total Deaths</th>
                               <th>Active Cases</th>
                               <th>Difference</th>
-                              <th>Infected %</th>
-                              <th>Growth Factor</th>
                            </tr>
                         </thead>
                         <tbody></tbody>
@@ -228,7 +205,6 @@
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
-                  
                            <h2 class="panel-title">New Cases, Recoveries & Deaths</h2>
                            <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
@@ -243,7 +219,6 @@
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
-                     
                            <h2 class="panel-title">New Cases vs Total Cases</h2>
                            <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
@@ -258,7 +233,6 @@
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
-                     
                            <h2 class="panel-title">Active Cases, Total Cases, Total Recovered & Total Deaths</h2>
                            <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
@@ -280,71 +254,105 @@
       </div>
    </section>
 
+   <script src="./convertAbbrToFullName.js"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
    <!-- Graphing Resources -->
    <script src="./assets/vendor/amcharts/core.js"></script>
    <script src="./assets/vendor/amcharts/charts.js"></script>
    <script src="./assets/vendor/amcharts/themes/animated.js"></script>
    <script src="./assets/vendor/amcharts/themes/patterns.js"></script>
 
-   <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>      
    <script>
-      const publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1arFbupT4hbnCO2FL0C8H5IFleJxEwICSZgH5EjY4554/edit#gid=0';
-      const population = 32255684;
+      const countryCode = getCountryCode();
+      const API_URL = `https://covid19-api.org/api/timeline/${countryCode}`;
+      // const population =  get from here maybe https://restcountries.eu/rest/v2/alpha/US?fields=population
 
-      window.addEventListener('DOMContentLoaded', init);
+      writeCountryNameInTitle(countryCode);
+      getRequest(API_URL);
 
-      // init Tabletop by passing sheet url to get data from the sheet, then call the processData func
-      function init() {
-         Tabletop.init({
-            key: publicSpreadsheetUrl,
-            callback: processData,
-            simpleSheet: true
-         })
+      function getCountryCode() {
+         const url = window.location.href;
+         const flagIndex = url.indexOf("?"); // we want to know the ? index in the url
+         const countryCode = url.substring(flagIndex + 1, flagIndex + 3); // get the country code after the ? flag
+         console.log(countryCode);
+
+         return countryCode;
       }
 
-      function processData(data, tabletop) {
-         let sheetData = data;
-         let size = sheetData.length;
-         let covidData = [], activeCases = [], newCases = [];
-         let totalCases = 0, totalRecovered = 0, totalDeath = 0, populationInfected = 0, differences = 0, growthFactor = 0;
+      function writeCountryNameInTitle(countryCode) {
+         const mainTitleElem = document.getElementById("mainTitle");
+         const countryName = getCountryName(countryCode);
+         
+         mainTitleElem.append(countryName);
+      }
+      
+      // use fetch api to get the covid data from an API
+      function getRequest(url) {
+         fetch(url, {
+            method: 'GET',
+            headers: {
+            },
+         })
+            .then((response) => response.json())
+            .then((data) => {
+               //console.log(data);
+               processData(data);
+            })
+            .catch((error) => {
+               console.error('Error:', error);
+            });
+      }
 
-         for (let i = 0; i < size; i++) {
-            newCases[i] = sheetData[i].new_cases;
-            totalCases = totalCases + parseInt(sheetData[i].new_cases);
-            totalRecovered = totalRecovered + parseInt(sheetData[i].recovered);
-            totalDeath = totalDeath + parseInt(sheetData[i].death);
-            activeCases[i] = totalCases - totalRecovered - totalDeath;
-            populationInfected = parseFloat((totalCases / population * 100).toFixed(6));
+      // process the raw data fetched from the API
+      function processData(data) {
+         let size = data.length;
+         let covidData = [];
+         let newCases = 0, recovered = 0, death = 0, differences = 0;
+         let totalCases = [], totalRecovered = [], totalDeath = [], activeCases = [];
+         let counter = 0;
+         let date;
 
-            if (i > 0) {
-               differences = activeCases[i] - activeCases[i - 1];
-               newCases[i - 1] == 0 ? (growthFactor = "NaN") : growthFactor = parseFloat((newCases[i] / newCases[i - 1]).toFixed(3));
+         for (let i = size-1; i >= 0; i--) {
+         //for (let i = 0; i < size; i++) {
+            totalCases[counter] = data[i].cases;
+            totalRecovered[counter] = data[i].recovered;
+            totalDeath[counter] = data[i].deaths;
+            activeCases[counter] = totalCases[counter] - totalRecovered[counter] - totalDeath[counter];
+            date = changeDateFormat(data[i].last_update.substring(0, 10))
+
+            // if it is not the first day, then we need to compare to the previous day
+            if (counter > 0) {
+               newCases = totalCases[counter] - totalCases[counter - 1];
+               recovered = totalRecovered[counter] - totalRecovered[counter - 1];
+               death = totalDeath[counter] - totalDeath[counter - 1];
+               differences = activeCases[counter] - activeCases[counter - 1];
+               //newCases[i - 1] == 0 ? (growthFactor = "NaN") : growthFactor = parseFloat((newCases[i] / newCases[i - 1]).toFixed(3));
             }
 
+            // covidData is an array of objects
             covidData.push({
-               date: sheetData[i].date,
-               new_case: parseInt(sheetData[i].new_cases),
-               recovered: parseInt(sheetData[i].recovered),
-               death: parseInt(sheetData[i].death),
-               totalCases: totalCases,
-               totalRecovered: totalRecovered,
-               totalDeath: totalDeath,
-               activeCases: activeCases[i],
+               totalCases: totalCases[counter],
+               totalRecovered: totalRecovered[counter],
+               totalDeath: totalDeath[counter],
+               new_case: newCases,
+               recovered: recovered,
+               death: death,
+               activeCases: activeCases[counter],
                differences: differences,
-               populationInfected: populationInfected,
-               growthFactor: growthFactor
+               date: date
+               /*growthFactor: growthFactor */
             });
+            counter++;
          }
-         getDataSize(covidData);
+         //console.log(covidData);
+         useData(covidData, size);
       }
 
-      function getDataSize(data) {
-         const size = Object.keys(data).length;
-
+      function useData(data, size) {
          displaySummary(data, size);
 
          for (let i = 0; i < size; i++) {
-            createRow(data[i], i+1);
+            createRow(data[i], i + 1);
          }
 
          drawGraph(data);
@@ -364,27 +372,27 @@
          t.row.add([
             num,
             data.date,
-            data.new_case,
-            data.recovered,
-            data.death,
-            data.totalCases,
-            data.totalRecovered,
-            data.totalDeath,
-            data.activeCases,
+            formatNumber(data.new_case, '0,0'),
+            formatNumber(data.recovered, '0,0'),
+            formatNumber(data.death, '0,0'),
+            formatNumber(data.totalCases, '0,0'),
+            formatNumber(data.totalRecovered, '0,0'),
+            formatNumber(data.totalDeath, '0,0'),
+            formatNumber(data.activeCases, '0,0'),
             diff,
-            data.populationInfected + "%",
-            data.growthFactor
+            //data.growthFactor
          ]).draw("full-reset");
-      }      
+      }
 
+      // draw line graph for new cases, recoveries & deaths vs date
       function drawGraph(data) {
          am4core.useTheme(am4themes_patterns);
          am4core.useTheme(am4themes_animated);
-         
+
          const chart = am4core.create("chartdiv", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.DateAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-         
+
          chart.data = data;
          xAxis.renderer.minGridDistance = 50;
 
@@ -405,7 +413,8 @@
          //chart.cursor.snapToSeries = series;         
          //series2.hidden = true;
       }
-     
+
+      // draw line graph for total infected vs total cases
       function drawGraph2(data) {
          const chart = am4core.create("chartdiv2", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.ValueAxis());
@@ -414,7 +423,7 @@
          chart.data = data;
          xAxis.renderer.minGridDistance = 50;
          //yAxis.logarithmic = true;
-         
+
          const graph = createGraph(chart, "line", "Total Infected", "vv", "totalCases", "new_case", "default");
          //const graph2 = createGraph(chart, "line", "Total Infected", "vv", "totalCases", "recovered", "default");
 
@@ -426,23 +435,24 @@
          // Add cursor & disable some elements
          chart.cursor = new am4charts.XYCursor();
          //chart.legend = new am4charts.Legend();
-         chart.cursor.snapToSeries = graph;   
+         chart.cursor.snapToSeries = graph;
          /* chart.cursor.lineX.disabled = true;
          chart.cursor.lineY.disabled = true; */
          xAxis.cursorTooltipEnabled = false;
-         yAxis.cursorTooltipEnabled = false;      
+         yAxis.cursorTooltipEnabled = false;
       }
 
-      function drawGraph3(data) {         
+      // draw line graph for active cases, total cases, total recovered & total death vs date
+      function drawGraph3(data) {
          const chart = am4core.create("chartdiv3", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.DateAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-         
+
          chart.data = data;
          xAxis.renderer.minGridDistance = 50;
 
          const graph1 = createGraph(chart, "line", "Active Cases", "dv", "date", "activeCases", "default");
-         const graph2 = createGraph(chart, "line", "Total Cases", "dv", "date", "totalCases", "#FFFF00"); 
+         const graph2 = createGraph(chart, "line", "Total Cases", "dv", "date", "totalCases", "#FFFF00");
          const graph3 = createGraph(chart, "line", "Total Recovered", "dv", "date", "totalRecovered", "#32CD32");
          const graph4 = createGraph(chart, "line", "Total Death", "dv", "date", "totalDeath", "#DC143C");
 
@@ -473,20 +483,20 @@
          false;
 
          xyType == "dv" ? (
-            graph.dataFields.dateX = xAxis, 
-            graph.dataFields.valueY = yAxis,  
+            graph.dataFields.dateX = xAxis,
+            graph.dataFields.valueY = yAxis,
             graph.tooltipText = `${cName}: {valueY}`) :
          xyType == "vv" ? (
-            graph.dataFields.valueX = xAxis, 
-            graph.dataFields.valueY = yAxis,  
+            graph.dataFields.valueX = xAxis,
+            graph.dataFields.valueY = yAxis,
             graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {valueX}`) :
          xyType == "cv" ? (
-            graph.dataFields.categoryX = xAxis, 
+            graph.dataFields.categoryX = xAxis,
             graph.dataFields.valueY = yAxis,
             graph.tooltipText = `${yAxis}: {valueY} \n ${xAxis}: {categoryX}`) :
          false;
 
-         graph.name = cName;  
+         graph.name = cName;
          graph.strokeWidth = 2;
          graph.minBulletDistance = 10;
          graph.tooltip.pointerOrientation = "vertical";
@@ -502,67 +512,80 @@
 
       function displaySummary(data, size) {
          const casesElem = document.getElementById("cases");
-         const nCasesElem = document.getElementById("nCases");
          const recoveredElem = document.getElementById("recovered");
-         const nRecovElem = document.getElementById("nRecov");
          const deathsElem = document.getElementById("deaths");
-         const nDeathsElem = document.getElementById("nDeaths");
          const activeCasesElem = document.getElementById("activeCases");
          const differencesElem = document.getElementById("differences");
-         const infectedElem = document.getElementById("infected");
          const recovRateElem = document.getElementById("recovRate");
          const fatalityRateElem = document.getElementById("fatalityRate");
          const activeCasesPercentElem = document.getElementById("activeCasesPercent");
-         const mcoDaysElem = document.getElementById("mcoDays");
-         const since1stCaseElem = document.getElementById("since1stCase");
-         //const mcoEndsElem = document.getElementById("mcoEnds");
          const latest = size - 1;
 
          let recovRate = data[latest].totalRecovered / data[latest].totalCases * 100;
          let fatalityRate = data[latest].totalDeath / data[latest].totalCases * 100;
          let activeCasesPercent = data[latest].activeCases / data[latest].totalCases * 100;
-         let a = "";
+         let diff = "";
 
-         let today = new Date();
-         const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-         const mcoStarts = new Date(2020, 2, 18); // 0 is Jan, so 2 is March
-         const firstCase = new Date(2020, 0, 25);
-         //const mcoEnds = new Date(2020, 4, 12, 23, 59);
-         const daysSinceMco = Math.floor(Math.abs((today - mcoStarts) / oneDay));
-         const daysSince1stCase = Math.floor(Math.abs((today - firstCase) / oneDay));
-         //const daysTillMco = Math.round(Math.abs((mcoEnds - today) / oneDay));
+         let totalCases = formatNumber(data[latest].totalCases, '0,0');
+         let newCases = formatNumber(data[latest].new_case, '0,0');
+         let totalRecovered = formatNumber(data[latest].totalRecovered, '0,0');
+         let recovered = formatNumber(data[latest].recovered, '0,0');
+         let totalDeath = formatNumber(data[latest].totalDeath, '0,0');
+         let death = formatNumber(data[latest].death, '0,0');
+         let activeCases = formatNumber(data[latest].activeCases, '0,0');
 
-         infectedElem.innerHTML = "Approx. " + (data[latest].populationInfected).toFixed(3) + "%";
          recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
          fatalityRateElem.innerHTML = (fatalityRate).toFixed(2) + "%";
          activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
 
-         //casesElem.innerHTML = data[latest].totalCases;
-         //recoveredElem.innerHTML = data[latest].totalRecovered;
-         //deathsElem.innerHTML = data[latest].totalDeath;
-
          data[latest].new_case > 0 ?
-            (casesElem.innerHTML = `${data[latest].totalCases} (&#8679;${data[latest].new_case})`) :
-            (casesElem.innerHTML = `${data[latest].totalCases} (${data[latest].new_case})`)
+            (casesElem.innerHTML = `${totalCases} (&#8679;${newCases})`) :
+            (casesElem.innerHTML = `${totalCases} (${newCases})`)
 
          data[latest].recovered > 0 ?
-            (recoveredElem.innerHTML = `${data[latest].totalRecovered} (&#8679;${data[latest].recovered})`) :
-            (recoveredElem.innerHTML = `${data[latest].totalRecovered} (${data[latest].recovered})`);
+            (recoveredElem.innerHTML = `${totalRecovered} (&#8679;${recovered})`) :
+            (recoveredElem.innerHTML = `${totalRecovered} (${recovered})`);
 
          data[latest].death > 0 ?
-            (deathsElem.innerHTML = `${data[latest].totalDeath} (&#8679;${data[latest].death})`) :
-            (deathsElem.innerHTML = `${data[latest].totalDeath} (${data[latest].death})`);
+            (deathsElem.innerHTML = `${totalDeath} (&#8679;${death})`) :
+            (deathsElem.innerHTML = `${totalDeath} (${death})`);
 
+         data[latest].differences == 0 ? 
+            (differencesElem.value = 0) :
          data[latest].differences > 0 ? 
             (differencesElem.value = `&#8679;${data[latest].differences}`) :
-            (  a = data[latest].differences.toString(),
-               differencesElem.value = `&#8681;${a.substr(1)}`);
+            (diff = data[latest].differences.toString(), differencesElem.value = `&#8681;${diff.substr(1)}`);
 
-         activeCasesElem.innerHTML = `${data[latest].activeCases} (${differencesElem.value})`;
+         activeCasesElem.innerHTML = `${activeCases} (${differencesElem.value})`;
+      }
 
-         mcoDaysElem.innerHTML = "" + daysSinceMco;
-         since1stCaseElem.innerHTML = "" + daysSince1stCase;
-         //mcoEndsElem.innerHTML = "" + daysTillMco;
+      function changeDateFormat(date) {
+         const year = date.substring(0, 4)
+         const month = date.substring(5, 7)
+         const day = date.substring(8, 10)
+         let textMonth
+
+         month == "01" ? textMonth = "Jan" :
+         month == "02" ? textMonth = "Feb" :
+         month == "03" ? textMonth = "Mar" :
+         month == "04" ? textMonth = "Apr" :
+         month == "05" ? textMonth = "May" :
+         month == "06" ? textMonth = "Jun" :
+         month == "07" ? textMonth = "Jul" :
+         month == "08" ? textMonth = "Aug" :
+         month == "09" ? textMonth = "Sep" :
+         month == "10" ? textMonth = "Oct" :
+         month == "11" ? textMonth = "Nov" :
+         month == "12" ? textMonth = "Dec" :
+         false;
+         
+         let reformatted = day + " " + textMonth + " " + year;
+
+         return reformatted;
+      }
+
+      function formatNumber(num, style) {
+         return num = numeral(num).format(style);
       }
    </script>
 

@@ -92,12 +92,12 @@
                               <span>Homepage</span>
                            </a>
                         </li>
-                        <li>
+                        <!-- <li>
                            <a href="./simpleVersion.html">
                               <i class="fa fa-circle-thin" aria-hidden="true"></i>
                               <span>Simple Version</span>
                            </a>
-                        </li>
+                        </li> -->
                         <li>
                            <a href="./states.html">
                               <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -145,20 +145,20 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Cases:</h5>
-                              <h5 id="cases"> <small id="nCases"></small></h5>
+                              <h5>Total Cases:</h5>
+                              <h5 class="text-dark" id="cases"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Recovered:</h5>
-                              <h5 id="recovered"> <small id="nRecov"></small></h5>
+                              <h5>Total Recovered:</h5>
+                              <h5 class="text-dark" id="recovered"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Deaths:</h5>
-                              <h5 id="deaths"> <small id="nDeaths"></small></h5>
+                              <h5>Total Deaths:</h5>
+                              <h5 class="text-dark" id="deaths"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Active Cases:</h5>
-                              <h5 id="activeCases"> <small id="differences"></small></h5>
+                              <h5>Active Cases:</h5>
+                              <h5 class="text-dark" id="activeCases"> <small id="differences"></small></h5>
                            </div>
                         </div>
                      </div>
@@ -166,20 +166,20 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Population Infected:</h5>
-                              <h5 id="infected"></h5>
+                              <h5>Population Infected:</h5>
+                              <h5 class="text-dark" id="infected"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Recovery Rate:</h5>
-                              <h5 id="recovRate"></h5>
+                              <h5>Recovery Rate:</h5>
+                              <h5 class="text-dark" id="recovRate"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Fatality Rate:</h5>
-                              <h5 id="fatalityRate"></h5>
+                              <h5>Fatality Rate:</h5>
+                              <h5 class="text-dark" id="fatalityRate"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Active Cases %:</h5>
-                              <h5 id="activeCasesPercent"></h5>
+                              <h5>Active Cases %:</h5>
+                              <h5 class="text-dark" id="activeCasesPercent"></h5>
                            </div>
                         </div>
                      </div><br>
@@ -187,12 +187,12 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Days since 1st Case (25 Jan):</h5>
-                              <h5 id="since1stCase"></h5>
+                              <h5>Days since 1st Case (25 Jan):</h5>
+                              <h5 class="text-dark" id="since1stCase"></h5>
                            </div>
                            <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Days since MCO:</h5>
-                              <h5 id="mcoDays"></h5>
+                              <h5>Days since MCO:</h5>
+                              <h5 class="text-dark" id="mcoDays"></h5>
                            </div>
                            <!-- <div class="col-md-6 col-xs-6">
                               <h5 class="text-dark">Days until MCO ends (12 May):</h5>
@@ -519,11 +519,8 @@
 
       function displaySummary(data, size) {
          const casesElem = document.getElementById("cases");
-         const nCasesElem = document.getElementById("nCases");
          const recoveredElem = document.getElementById("recovered");
-         const nRecovElem = document.getElementById("nRecov");
          const deathsElem = document.getElementById("deaths");
-         const nDeathsElem = document.getElementById("nDeaths");
          const activeCasesElem = document.getElementById("activeCases");
          const differencesElem = document.getElementById("differences");
          const infectedElem = document.getElementById("infected");
@@ -540,23 +537,14 @@
          let activeCasesPercent = data[latest].activeCases / data[latest].totalCases * 100;
          let a = "";
 
-         let today = new Date();
-         const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-         const mcoStarts = new Date(2020, 2, 18); // 0 is Jan, so 2 is March
-         const firstCase = new Date(2020, 0, 25);
-         //const mcoEnds = new Date(2020, 4, 12, 23, 59);
-         const daysSinceMco = Math.floor(Math.abs((today - mcoStarts) / oneDay));
-         const daysSince1stCase = Math.floor(Math.abs((today - firstCase) / oneDay));
+         const daysSinceMco = calculateDaysSince("daysSinceMco");
+         const daysSince1stCase = calculateDaysSince("daysSince1stCase");
          //const daysTillMco = Math.round(Math.abs((mcoEnds - today) / oneDay));
 
          infectedElem.innerHTML = "Approx. " + (data[latest].populationInfected).toFixed(3) + "%";
          recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
          fatalityRateElem.innerHTML = (fatalityRate).toFixed(2) + "%";
          activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
-
-         //casesElem.innerHTML = data[latest].totalCases;
-         //recoveredElem.innerHTML = data[latest].totalRecovered;
-         //deathsElem.innerHTML = data[latest].totalDeath;
 
          data[latest].new_case > 0 ?
             (casesElem.innerHTML = `${data[latest].totalCases} (&#8679;${data[latest].new_case})`) :
@@ -570,17 +558,33 @@
             (deathsElem.innerHTML = `${data[latest].totalDeath} (&#8679;${data[latest].death})`) :
             (deathsElem.innerHTML = `${data[latest].totalDeath} (${data[latest].death})`);
 
-         data[latest].differences == 0 ? (differencesElem.value = 0) :
-         data[latest].differences > 0 ?
+         data[latest].differences == 0 ? 
+            (differencesElem.value = 0) :
+         data[latest].differences > 0 ? 
             (differencesElem.value = `&#8679;${data[latest].differences}`) :
-            (a = data[latest].differences.toString(),
-               differencesElem.value = `&#8681;${a.substr(1)}`);
+            (a = data[latest].differences.toString(), differencesElem.value = `&#8681;${a.substr(1)}`);
 
          activeCasesElem.innerHTML = `${data[latest].activeCases} (${differencesElem.value})`;
-
          mcoDaysElem.innerHTML = "" + daysSinceMco;
          since1stCaseElem.innerHTML = "" + daysSince1stCase;
          //mcoEndsElem.innerHTML = "" + daysTillMco;
+      }
+
+      function calculateDaysSince(type) {
+         let today = new Date();
+         const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+         let date, daysSince;
+
+         if(type == "daysSinceMco") {
+            date = new Date(2020, 2, 18);
+            daysSince = Math.floor(Math.abs((today - date) / oneDay));
+         }
+         else if(type == "daysSince1stCase") {
+            date = new Date(2020, 0, 25);
+            daysSince = Math.floor(Math.abs((today - date) / oneDay));
+         }
+
+        return daysSince;
       }
 
       function changeDateFormat(date) {
