@@ -128,7 +128,7 @@
                <h2>Covid-19</h2>
             </header>
             <div class="tabs tabs-primary">
-               <h2>Covid-19 Cases Worldwide</h2><br>
+               <h2>Covid-19 Worldwide Cases</h2><br>
                <ul class="nav nav-tabs nav-justified">
                   <li class="active">
                      <a href="#covidTable" data-toggle="tab" class="text-center"><i class="fa fa-table"></i> Table</a>
@@ -184,10 +184,10 @@
                      
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
-                           <div class="col-md-6 col-xs-6">
+                           <!-- <div class="col-md-6 col-xs-6">
                               <h5 class="text-dark">Affected Countries:</h5>
                               <h5 id="affected"></h5>
-                           </div>
+                           </div> -->
                            <div class="col-md-6 col-xs-6">
                               <h5 class="text-dark">Days since 1st reported case (8/12/19):</h5>
                               <h5 id="days"></h5>
@@ -198,11 +198,8 @@
                         <thead>
                            <tr>
                               <th>No</th>
-                              <th class="col-sm-1">Country</th>
-                              <!-- <th>New Cases</th> -->
-                              <!-- <th>Recovered</th> -->
-                              <!-- <th>Death</th> -->
-                              <th>Total Cases</th>
+                              <th class="col-sm-2">Country</th>
+                              <th class="col-sm-2">Total Cases</th>
                               <th>Total Recovered</th>
                               <th>Total Deaths</th>
                               <th>Active Cases</th>
@@ -222,13 +219,13 @@
    </section>
 
    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+   <script src="./convertAbbrToFullName.js"></script>
    <script>
-      //let allRecovRate = [];
-      //let allFatalRate = [];
+      //window.addEventListener('DOMContentLoaded', getRequest("https://my-bypass-cors.herokuapp.com/bypass?url=https://thevirustracker.com/free-api?global=stats", "summary"));
+      //window.addEventListener('DOMContentLoaded', getRequest("https://api.covid19api.com/summary", "table"));
+      window.addEventListener('DOMContentLoaded', getRequest("https://covid19-api.org/api/timeline", "summary"));
+      window.addEventListener('DOMContentLoaded', getRequest("https://covid19-api.org/api/status", "table"));
 
-      window.addEventListener('DOMContentLoaded', getRequest("https://my-bypass-cors.herokuapp.com/bypass?url=https://thevirustracker.com/free-api?global=stats", "summary"));
-      window.addEventListener('DOMContentLoaded', getRequest("https://api.covid19api.com/summary", "table"));
-      
       function getRequest(url, action) {
          fetch(url, {
             method: 'GET',
@@ -246,7 +243,7 @@
             });
       }
 
-      function getDataSize(data) {
+      /* function getDataSize(data) {
          const size = Object.keys(data.Countries).length;
          let num = 0;
 
@@ -261,23 +258,31 @@
                createRow(data.Countries[i], num);             
             }
          }
+      } */
+
+      function getDataSize(data) {
+         const size = data.length;
+         let num = 0;
+
+         for (let i = 0; i < size; i++) {
+            num++;
+            createRow(data[i], num); 
+         }
       }
 
       function createRow(data, num) {
          const t = $('#datatable-tabletools').DataTable();
 
-         let activeCases = data.TotalConfirmed - data.TotalRecovered - data.TotalDeaths;
-         let recoveryRate = (data.TotalRecovered / data.TotalConfirmed * 100).toFixed(2);
-         let fatalityRate = (data.TotalDeaths / data.TotalConfirmed * 100).toFixed(2);
-         //allRecovRate.push(parseFloat(recoveryRate));
-         //allFatalRate.push(parseFloat(fatalityRate));
+         let activeCases = data.cases - data.recovered - data.deaths;
+         let recoveryRate = (data.recovered / data.cases * 100).toFixed(2);
+         let fatalityRate = (data.deaths / data.cases * 100).toFixed(2);
 
          t.row.add([
             num,
-            data.Country,
-            formatNumber(data.TotalConfirmed, '0,0'),
-            formatNumber(data.TotalRecovered, '0,0'),
-            formatNumber(data.TotalDeaths, '0,0'),
+            `<a href="country.html?${data.country}">${getCountryName(data.country)}</a>`,
+            formatNumber(data.cases, '0,0'),
+            formatNumber(data.recovered, '0,0'),
+            formatNumber(data.deaths, '0,0'),
             formatNumber(activeCases, '0,0'),
             `${recoveryRate}%`,
             `${fatalityRate}%`
@@ -285,7 +290,7 @@
       }
 
       function displaySummary(data) {
-         const result = data.results[0];
+         const result = data[0];
          const worldPopulation = 7646314700;
          const casesElem = document.getElementById("cases");
          const nCasesElem = document.getElementById("nCases");
@@ -300,7 +305,7 @@
          const fatalityRateElem = document.getElementById("fatalityRate");
          const activeCasesPercentElem = document.getElementById("activeCasesPercent");
          const daysElem = document.getElementById("days");
-         const affectedElem = document.getElementById("affected");
+         //const affectedElem = document.getElementById("affected");
 
          let activeCases = result.total_cases - result.total_recovered - result.total_deaths;
          let recovRate = result.total_recovered / result.total_cases * 100;
@@ -322,7 +327,7 @@
          activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
          infectedElem.innerHTML = "Approx. " + (infected).toFixed(3) + "%"; 
          daysElem.innerHTML = "" + daysSinceCovid;
-         affectedElem.innerHTML = result.total_affected_countries;
+         //affectedElem.innerHTML = result.total_affected_countries;
       }
 
       function formatNumber(num, style) {
@@ -340,16 +345,6 @@
             return 0;  
          }  
       }
-      
-      /* function calculateAverage(countries) {         
-         let sumRecovRate = allRecovRate.reduce((a, b) => a + b, 0);
-         let sumFatalRate = allFatalRate.reduce((a, b) => a + b, 0);
-         let averageRecovRate = (sumRecovRate / countries).toFixed(2);
-         let averageFatalRate = (sumFatalRate / countries).toFixed(2);
-
-         console.log(countries)
-         console.log(averageRecovRate + "; " + averageFatalRate)
-      } */
    </script>
 
    <!-- Vendor -->
