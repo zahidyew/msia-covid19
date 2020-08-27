@@ -101,12 +101,12 @@
                               <span>Simple Version</span>
                            </a>
                         </li> -->
-                        <li>
+                        <!-- <li>
                            <a href="./states.html">
                               <i class="fa fa-map-marker" aria-hidden="true"></i>
                               <span>By States</span>
                            </a>
-                        </li>
+                        </li> -->
                         <li>
                            <a href="./events.html">
                               <i class="fa fa-star-o" aria-hidden="true"></i>
@@ -205,6 +205,20 @@
                            <div class="panel-actions">
                               <a href="#" class="fa fa-caret-down"></a>
                            </div>
+                           <h2 class="panel-title">Active Cases, Total Cases, Total Recovered & Total Deaths</h2>
+                           <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
+                        </header>
+                        <div class="panel-body">
+                           <!-- Content here: the graph to be drawn -->
+                           <div class="charts" id="chartdiv3"></div>
+                        </div>
+                     </section><br>
+
+                     <section class="panel panel-featured">
+                        <header class="panel-heading">
+                           <div class="panel-actions">
+                              <a href="#" class="fa fa-caret-down"></a>
+                           </div>
                            <h2 class="panel-title">New Cases, Recoveries & Deaths</h2>
                            <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
                         </header>
@@ -225,20 +239,6 @@
                         <div class="panel-body">
                            <!-- Content here: the graph to be drawn -->
                            <div class="charts" id="chartdiv2"></div>
-                        </div>
-                     </section><br>
-
-                     <section class="panel panel-featured">
-                        <header class="panel-heading">
-                           <div class="panel-actions">
-                              <a href="#" class="fa fa-caret-down"></a>
-                           </div>
-                           <h2 class="panel-title">Active Cases, Total Cases, Total Recovered & Total Deaths</h2>
-                           <!-- <p class="panel-subtitle">A bar graph to visualize ...</p> -->
-                        </header>
-                        <div class="panel-body">
-                           <!-- Content here: the graph to be drawn -->
-                           <div class="charts" id="chartdiv3"></div>
                         </div>
                      </section><br>
                   </div>
@@ -472,6 +472,9 @@
          chart.cursor = new am4charts.XYCursor();
          chart.cursor.xAxis = xAxis;
          chart.legend = new am4charts.Legend();
+
+         graph2.hidden = true;
+         graph3.hidden = true;
       }
 
       function createGraph(chart, type, cName, xyType, xAxis, yAxis, color) {
