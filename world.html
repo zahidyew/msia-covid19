@@ -191,7 +191,11 @@
                            <div class="col-md-6 col-xs-6">
                               <h5 class="text-dark">Days since 1st reported case (8/12/19):</h5>
                               <h5 id="days"></h5>
-                           </div>                         
+                           </div>        
+                           <div class="col-md-6 col-xs-6">
+                              <h5 class="text-dark">*Population infected is an approximation.</h5>
+                              <h5 id="days"></h5>
+                           </div>
                         </div>
                      </div>
                      <table class="table table-bordered table-striped col-md-12 col-xs-12" id="datatable-tabletools">
@@ -199,12 +203,13 @@
                            <tr>
                               <th>No</th>
                               <th class="col-sm-2">Country</th>
-                              <th class="col-sm-2">Total Cases</th>
+                              <th>Total Cases</th>
                               <th>Total Recovered</th>
                               <th>Total Deaths</th>
                               <th>Active Cases</th>
                               <th>Recovery Rate</th>
                               <th>Fatality Rate</th>
+                              <th>Population Inf.</th>
                            </tr>
                         </thead>
                         <tbody></tbody>
@@ -221,21 +226,33 @@
    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
    <script src="./convertAbbrToFullName.js"></script>
    <script>
-      //window.addEventListener('DOMContentLoaded', getRequest("https://my-bypass-cors.herokuapp.com/bypass?url=https://thevirustracker.com/free-api?global=stats", "summary"));
-      //window.addEventListener('DOMContentLoaded', getRequest("https://api.covid19api.com/summary", "table"));
+      var countriesDetails = [];
+
+      //getRequest("https://my-bypass-cors.herokuapp.com/bypass?url=https://thevirustracker.com/free-api?global=stats", "summary"));
       window.addEventListener('DOMContentLoaded', getRequest("https://covid19-api.org/api/timeline", "summary"));
-      window.addEventListener('DOMContentLoaded', getRequest("https://covid19-api.org/api/status", "table"));
+      window.addEventListener('DOMContentLoaded', getCountriesDetails('https://restcountries.eu/rest/v2/all?fields=name;alpha2Code;population'));
+
+      // get all countries' name, alpha2Code and population
+      function getCountriesDetails(url) {
+         fetch(url, {method: 'GET'})
+            .then((response) => response.json())
+            .then((data) => {
+               countriesDetails = data;
+               //console.log(countriesDetails)
+               // only after we get the countries' details, we fetch the countries' covid data
+               getRequest("https://covid19-api.org/api/status", "table");
+            })
+            .catch((error) => {
+               console.error('Error:', error);
+            });
+      }
 
       function getRequest(url, action) {
-         fetch(url, {
-            method: 'GET',
-            headers: {
-            },
-         })
+         fetch(url, {method: 'GET'})
             .then((response) => response.json())
             .then((data) => {
                action == "summary" ? (displaySummary(data)) :
-               action == "table" ? (getDataSize(data)) :
+               action == "table" ? (matchCountryWithItsPopulation(data)) :
                false;
             })
             .catch((error) => {
@@ -243,39 +260,33 @@
             });
       }
 
-      /* function getDataSize(data) {
-         const size = Object.keys(data.Countries).length;
-         let num = 0;
-
-         // sort the countries by total cases in descending order
-         data.Countries.sort(sortByProperty("TotalConfirmed"))
-
-         for (let i = 0; i < size; i++) {
-            if(data.Countries[i].TotalConfirmed == 0) {
-               // if a country does not have any case, then dont show
-            }else{
-               num++;
-               createRow(data.Countries[i], num);             
-            }
-         }
-      } */
-
-      function getDataSize(data) {
+      function matchCountryWithItsPopulation(data) {
          const size = data.length;
          let num = 0;
 
-         for (let i = 0; i < size; i++) {
+         /* 
+         data[i] is a country's covid data, we want to get the population for each country 
+         which is fetched from another API and stored in countryDetails array.
+         We do this by comparing the country code using .find
+         Remember .find returns the value of the first element in the array that satisfies the provided testing func. 
+         */
+         for (let i = 0; i < size; i++) {        
+            const currentCountry = countriesDetails.find(item => (item.alpha2Code === data[i].country));
+            //console.log(currentCountry)
+
             num++;
-            createRow(data[i], num); 
+            createRow(data[i], num, currentCountry.population); 
          }
       }
 
-      function createRow(data, num) {
+      function createRow(data, num, population) {
          const t = $('#datatable-tabletools').DataTable();
 
          let activeCases = data.cases - data.recovered - data.deaths;
          let recoveryRate = (data.recovered / data.cases * 100).toFixed(2);
          let fatalityRate = (data.deaths / data.cases * 100).toFixed(2);
+         let infected = (data.cases / population * 100).toFixed(2);
+         //console.log(infected)
 
          t.row.add([
             num,
@@ -285,7 +296,8 @@
             formatNumber(data.deaths, '0,0'),
             formatNumber(activeCases, '0,0'),
             `${recoveryRate}%`,
-            `${fatalityRate}%`
+            `${fatalityRate}%`,
+            `${infected}%`
          ]).draw("full-reset");
       }
 
@@ -335,7 +347,7 @@
       }
 
       //sort numbers in Descending order.
-      function sortByProperty(property){ 
+      /* function sortByProperty(property){ 
          return function(a,b){  
             if(a[property] > b[property]) // return negative num, then a,b 
                return -1; 
@@ -344,7 +356,7 @@
 
             return 0;  
          }  
-      }
+      } */
    </script>
 
    <!-- Vendor -->
