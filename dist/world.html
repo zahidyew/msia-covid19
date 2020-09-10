@@ -271,11 +271,13 @@
          Remember .find returns the value of the first element in the array that satisfies the provided testing func. 
          */
          for (let i = 0; i < size; i++) {        
-            const currentCountry = countriesDetails.find(item => (item.alpha2Code === data[i].country));
-            //console.log(currentCountry)
+            if(data[i].cases !== 0) { // dont include the countries with no recorded case
+               const currentCountry = countriesDetails.find(item => (item.alpha2Code === data[i].country));
+               //console.log(currentCountry)
 
-            num++;
-            createRow(data[i], num, currentCountry.population); 
+               num++;
+               createRow(data[i], num, currentCountry.population); 
+            } 
          }
       }
 
