@@ -92,18 +92,6 @@
                               <span>Homepage</span>
                            </a>
                         </li>
-                        <!-- <li>
-                           <a href="./simpleVersion.html">
-                              <i class="fa fa-circle-thin" aria-hidden="true"></i>
-                              <span>Simple Version</span>
-                           </a>
-                        </li> -->
-                        <!-- <li>
-                           <a href="./states.html">
-                              <i class="fa fa-map-marker" aria-hidden="true"></i>
-                              <span>By States</span>
-                           </a>
-                        </li> -->
                         <li>
                            <a href="./events.html">
                               <i class="fa fa-star-o" aria-hidden="true"></i>
@@ -143,20 +131,20 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Cases:</h5>
-                              <h5 id="cases"> <small id="nCases"></small></h5>
+                              <h5>Total Cases:</h5>
+                              <h5 class="text-dark" id="cases"> <small id="nCases"></small></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Recovered:</h5>
-                              <h5 id="recovered"> <small id="nRecov"></small></h5>
+                              <h5>Total Recovered:</h5>
+                              <h5 class="text-dark" id="recovered"> <small id="nRecov"></small></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Total Deaths:</h5>
-                              <h5 id="deaths"> <small id="nDeaths"></small></h5>
+                              <h5>Total Deaths:</h5>
+                              <h5 class="text-dark" id="deaths"> <small id="nDeaths"></small></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Active Cases:</h5>
-                              <h5 id="activeCases"> <small id="differences"></small></h5>
+                              <h5>Active Cases:</h5>
+                              <h5 class="text-dark" id="activeCases"> <small id="differences"></small></h5>
                            </div>
                         </div>
                      </div>
@@ -164,20 +152,20 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Population Infected:</h5>
-                              <h5 id="infected"></h5>
+                              <h5>Population Infected:</h5>
+                              <h5 class="text-dark" id="infected"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Recovery Rate:</h5>
-                              <h5 id="recovRate"></h5>
+                              <h5>Recovery Rate:</h5>
+                              <h5 class="text-dark" id="recovRate"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Fatality Rate:</h5>
-                              <h5 id="fatalityRate"></h5>
+                              <h5>Fatality Rate:</h5>
+                              <h5 class="text-dark" id="fatalityRate"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5 class="text-dark">Active Cases %:</h5>
-                              <h5 id="activeCasesPercent"></h5>
+                              <h5>Active Cases %:</h5>
+                              <h5 class="text-dark" id="activeCasesPercent"></h5>
                            </div>
                         </div>
                      </div><br>
@@ -185,16 +173,16 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <!-- <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Affected Countries:</h5>
-                              <h5 id="affected"></h5>
+                              <h5>Affected Countries:</h5>
+                              <h5 class="text-dark" id="affected"></h5>
                            </div> -->
                            <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">Days since 1st reported case (8/12/19):</h5>
-                              <h5 id="days"></h5>
+                              <h5>Days since 1st reported case (8/12/19):</h5>
+                              <h5 class="text-dark" id="days"></h5>
                            </div>        
                            <div class="col-md-6 col-xs-6">
-                              <h5 class="text-dark">*Population infected is an approximation.</h5>
-                              <h5 id="days"></h5>
+                              <h5>*Population infected is an approximation.</h5>
+                              <h5 class="text-dark" id="days"></h5>
                            </div>
                         </div>
                      </div>
@@ -225,12 +213,13 @@
 
    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
    <script src="./convertAbbrToFullName.js"></script>
+
    <script>
       var countriesDetails = [];
 
       //getRequest("https://my-bypass-cors.herokuapp.com/bypass?url=https://thevirustracker.com/free-api?global=stats", "summary"));
-      window.addEventListener('DOMContentLoaded', getRequest("https://covid19-api.org/api/timeline", "summary"));
-      window.addEventListener('DOMContentLoaded', getCountriesDetails('https://restcountries.eu/rest/v2/all?fields=name;alpha2Code;population'));
+      getRequest("https://covid19-api.org/api/timeline", "summary");
+      getCountriesDetails('https://restcountries.eu/rest/v2/all?fields=name;alpha2Code;population');
 
       // get all countries' name, alpha2Code and population
       function getCountriesDetails(url) {
