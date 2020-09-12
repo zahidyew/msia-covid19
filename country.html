@@ -137,7 +137,7 @@
                      <a href="#covidTable" data-toggle="tab" class="text-center"><i class="fa fa-table"></i> Table</a>
                   </li>
                   <li>
-                     <a href="#covidGraphs" data-toggle="tab" class="text-center"><i class="fa fa-bar-chart-o"></i> Graphs</a>
+                     <a href="#covidGraphs" data-toggle="tab" class="text-center" id="graphs"><i class="fa fa-bar-chart-o"></i> Graphs</a>
                   </li>
                </ul>
                 <div class="tab-content">
@@ -166,8 +166,8 @@
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
                            <div class="col-md-3 col-sm-3 col-xs-6">
-                              <h5>Active Cases %:</h5>
-                              <h5 class="text-dark" id="activeCasesPercent"></h5>
+                              <h5>Population Infected:</h5>
+                              <h5 class="text-dark" id="infected"></h5>
                            </div>
                            <div class="col-md-3 col-sm-3 col-xs-6">
                               <h5>Recovery Rate:</h5>
@@ -176,6 +176,10 @@
                            <div class="col-md-3 col-sm-3 col-xs-6">
                               <h5>Fatality Rate:</h5>
                               <h5 class="text-dark" id="fatalityRate"></h5>
+                           </div>
+                           <div class="col-md-3 col-sm-3 col-xs-6">
+                              <h5>Active Cases %:</h5>
+                              <h5 class="text-dark" id="activeCasesPercent"></h5>
                            </div>
                         </div>
                      </div><br>
@@ -265,18 +269,39 @@
    <script>
       const countryCode = getCountryCode();
       const API_URL = `https://covid19-api.org/api/timeline/${countryCode}`;
-      // const population =  get from here maybe https://restcountries.eu/rest/v2/alpha/US?fields=population
+      let covidData = [];
+      let flag = false;
 
       writeCountryNameInTitle(countryCode);
       getRequest(API_URL);
+
+      // only when the user clicked the "Graphs" tab for 1st time will we draw the graphs
+      document.getElementById("graphs")
+         .addEventListener("click", () => {
+            if(flag === false) {
+               drawGraph();
+               drawGraph2();
+               drawGraph3();
+               flag = true
+            }   
+         })
 
       function getCountryCode() {
          const url = window.location.href;
          const flagIndex = url.indexOf("?"); // we want to know the ? index in the url
          const countryCode = url.substring(flagIndex + 1, flagIndex + 3); // get the country code after the ? flag
-         console.log(countryCode);
+         //console.log(countryCode);
 
          return countryCode;
+      }
+
+      function getPopulation() {
+         const url = window.location.href;
+         const flagIndex = url.indexOf(";"); // we want to know the ; index in the url
+         const population = url.substring(flagIndex + 1); // get the population after the ; flag
+         console.log(population);
+
+         return population;
       }
 
       function writeCountryNameInTitle(countryCode) {
@@ -302,7 +327,7 @@
       // process the raw data fetched from the API
       function processData(data) {
          let size = data.length;
-         let covidData = [];
+         //let covidData = [];
          let newCases = 0, recovered = 0, death = 0, differences = 0;
          let totalCases = [], totalRecovered = [], totalDeath = [], activeCases = [];
          let counter = 0;
@@ -341,19 +366,15 @@
             counter++;
          }
          //console.log(covidData);
-         useData(covidData, size);
+         useData(size);
       }
 
-      function useData(data, size) {
-         displaySummary(data, size);
+      function useData(size) {
+         displaySummary(covidData, size);
 
          for (let i = 0; i < size; i++) {
-            createRow(data[i], i + 1);
+            createRow(covidData[i], i + 1);
          }
-
-         drawGraph(data);
-         drawGraph2(data);
-         drawGraph3(data);
       }
 
       function createRow(data, num) {
@@ -381,7 +402,7 @@
       }
 
       // draw line graph for new cases, recoveries & deaths vs date
-      function drawGraph(data) {
+      function drawGraph() {
          am4core.useTheme(am4themes_patterns);
          am4core.useTheme(am4themes_animated);
 
@@ -389,7 +410,7 @@
          const xAxis = chart.xAxes.push(new am4charts.DateAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-         chart.data = data;
+         chart.data = covidData;
          xAxis.renderer.minGridDistance = 50;
 
          const graph1 = createGraph(chart, "line", "New Cases", "dv", "date", "new_case", "default");
@@ -411,12 +432,12 @@
       }
 
       // draw line graph for total infected vs total cases
-      function drawGraph2(data) {
+      function drawGraph2() {
          const chart = am4core.create("chartdiv2", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.ValueAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-         chart.data = data;
+         chart.data = covidData;
          xAxis.renderer.minGridDistance = 50;
          //yAxis.logarithmic = true;
 
@@ -439,12 +460,12 @@
       }
 
       // draw line graph for active cases, total cases, total recovered & total death vs date
-      function drawGraph3(data) {
+      function drawGraph3() {
          const chart = am4core.create("chartdiv3", am4charts.XYChart);
          const xAxis = chart.xAxes.push(new am4charts.DateAxis());
          const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-         chart.data = data;
+         chart.data = covidData;
          xAxis.renderer.minGridDistance = 50;
 
          const graph1 = createGraph(chart, "line", "Active Cases", "dv", "date", "activeCases", "default");
@@ -514,12 +535,14 @@
          const recoveredElem = document.getElementById("recovered");
          const deathsElem = document.getElementById("deaths");
          const activeCasesElem = document.getElementById("activeCases");
+         const infectedElem = document.getElementById("infected");
          const differencesElem = document.getElementById("differences");
          const recovRateElem = document.getElementById("recovRate");
          const fatalityRateElem = document.getElementById("fatalityRate");
          const activeCasesPercentElem = document.getElementById("activeCasesPercent");
          const latest = size - 1;
 
+         let infectedRate = data[latest].totalCases / getPopulation() * 100;
          let recovRate = data[latest].totalRecovered / data[latest].totalCases * 100;
          let fatalityRate = data[latest].totalDeath / data[latest].totalCases * 100;
          let activeCasesPercent = data[latest].activeCases / data[latest].totalCases * 100;
@@ -533,6 +556,7 @@
          let death = formatNumber(data[latest].death, '0,0');
          let activeCases = formatNumber(data[latest].activeCases, '0,0');
 
+         infectedElem.innerHTML = (infectedRate).toFixed(2) + "%";
          recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
          fatalityRateElem.innerHTML = (fatalityRate).toFixed(2) + "%";
          activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
