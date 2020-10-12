@@ -383,19 +383,19 @@
          let diff;
 
          data.differences > 0 ?
-            (diff = `+${data.differences}`) :
-            (diff = data.differences.toString());
+            (diff = `+${formatNumber(data.differences)}`) :
+            (diff = formatNumber(data.differences).toString());
 
          t.row.add([
             num,
             data.date,
-            formatNumber(data.new_case, '0,0'),
-            formatNumber(data.recovered, '0,0'),
-            formatNumber(data.death, '0,0'),
-            formatNumber(data.totalCases, '0,0'),
-            formatNumber(data.totalRecovered, '0,0'),
-            formatNumber(data.totalDeath, '0,0'),
-            formatNumber(data.activeCases, '0,0'),
+            formatNumber(data.new_case),
+            formatNumber(data.recovered),
+            formatNumber(data.death),
+            formatNumber(data.totalCases),
+            formatNumber(data.totalRecovered),
+            formatNumber(data.totalDeath),
+            formatNumber(data.activeCases),
             diff,
             //data.growthFactor
          ]).draw("full-reset");
@@ -548,13 +548,13 @@
          let activeCasesPercent = data[latest].activeCases / data[latest].totalCases * 100;
          let diff = "";
 
-         let totalCases = formatNumber(data[latest].totalCases, '0,0');
-         let newCases = formatNumber(data[latest].new_case, '0,0');
-         let totalRecovered = formatNumber(data[latest].totalRecovered, '0,0');
-         let recovered = formatNumber(data[latest].recovered, '0,0');
-         let totalDeath = formatNumber(data[latest].totalDeath, '0,0');
-         let death = formatNumber(data[latest].death, '0,0');
-         let activeCases = formatNumber(data[latest].activeCases, '0,0');
+         let totalCases = formatNumber(data[latest].totalCases);
+         let newCases = formatNumber(data[latest].new_case);
+         let totalRecovered = formatNumber(data[latest].totalRecovered);
+         let recovered = formatNumber(data[latest].recovered);
+         let totalDeath = formatNumber(data[latest].totalDeath);
+         let death = formatNumber(data[latest].death);
+         let activeCases = formatNumber(data[latest].activeCases);
 
          infectedElem.innerHTML = (infectedRate).toFixed(2) + "%";
          recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
@@ -576,8 +576,8 @@
          data[latest].differences == 0 ? 
             (differencesElem.value = 0) :
          data[latest].differences > 0 ? 
-            (differencesElem.value = `&#8679;${data[latest].differences}`) :
-            (diff = data[latest].differences.toString(), differencesElem.value = `&#8681;${diff.substr(1)}`);
+            (differencesElem.value = `&#8679;${formatNumber(data[latest].differences)}`) :
+            (diff = formatNumber(data[latest].differences).toString(), differencesElem.value = `&#8681;${diff.substr(1)}`);
 
          activeCasesElem.innerHTML = `${activeCases} (${differencesElem.value})`;
       }
@@ -607,8 +607,8 @@
          return reformatted;
       }
 
-      function formatNumber(num, style) {
-         return num = numeral(num).format(style);
+      function formatNumber(num) {
+         return num = numeral(num).format('0,0');
       }
    </script>
 

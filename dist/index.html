@@ -277,6 +277,7 @@
       </div>
    </section>
 
+   <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
    <!-- Graphing Resources -->
    <script src="./assets/vendor/amcharts/core.js"></script>
    <script src="./assets/vendor/amcharts/charts.js"></script>
@@ -379,19 +380,19 @@
          let diff;
 
          data.differences > 0 ?
-            (diff = `+${data.differences}`) :
-            (diff = data.differences.toString());
+            (diff = `+${formatNumber(data.differences)}`) :
+            (diff = formatNumber(data.differences).toString());
 
          t.row.add([
             num,
             data.date,
-            data.new_case,
-            data.recovered,
-            data.death,
-            data.totalCases,
-            data.totalRecovered,
-            data.totalDeath,
-            data.activeCases,
+            formatNumber(data.new_case),
+            formatNumber(data.recovered),
+            formatNumber(data.death),
+            formatNumber(data.totalCases),
+            formatNumber(data.totalRecovered),
+            formatNumber(data.totalDeath),
+            formatNumber(data.activeCases),
             diff,
             data.populationInfected + "%"
             //data.growthFactor
@@ -557,24 +558,24 @@
          activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
 
          data[latest].new_case > 0 ?
-            (casesElem.innerHTML = `${data[latest].totalCases} (&#8679;${data[latest].new_case})`) :
-            (casesElem.innerHTML = `${data[latest].totalCases} (${data[latest].new_case})`)
+            (casesElem.innerHTML = `${formatNumber(data[latest].totalCases)} (&#8679;${data[latest].new_case})`) :
+            (casesElem.innerHTML = `${formatNumber(data[latest].totalCases)} (${data[latest].new_case})`)
 
          data[latest].recovered > 0 ?
-            (recoveredElem.innerHTML = `${data[latest].totalRecovered} (&#8679;${data[latest].recovered})`) :
-            (recoveredElem.innerHTML = `${data[latest].totalRecovered} (${data[latest].recovered})`);
+            (recoveredElem.innerHTML = `${formatNumber(data[latest].totalRecovered)} (&#8679;${data[latest].recovered})`) :
+            (recoveredElem.innerHTML = `${formatNumber(data[latest].totalRecovered)} (${data[latest].recovered})`);
 
          data[latest].death > 0 ?
-            (deathsElem.innerHTML = `${data[latest].totalDeath} (&#8679;${data[latest].death})`) :
-            (deathsElem.innerHTML = `${data[latest].totalDeath} (${data[latest].death})`);
+            (deathsElem.innerHTML = `${formatNumber(data[latest].totalDeath)} (&#8679;${data[latest].death})`) :
+            (deathsElem.innerHTML = `${formatNumber(data[latest].totalDeath)} (${data[latest].death})`);
 
          data[latest].differences == 0 ? 
             (differencesElem.value = 0) :
          data[latest].differences > 0 ? 
-            (differencesElem.value = `&#8679;${data[latest].differences}`) :
-            (a = data[latest].differences.toString(), differencesElem.value = `&#8681;${a.substr(1)}`);
+            (differencesElem.value = `&#8679;${formatNumber(data[latest].differences)}`) :
+            (a = formatNumber(data[latest].differences).toString(), differencesElem.value = `&#8681;${a.substr(1)}`);
 
-         activeCasesElem.innerHTML = `${data[latest].activeCases} (${differencesElem.value})`;
+         activeCasesElem.innerHTML = `${formatNumber(data[latest].activeCases)} (${differencesElem.value})`;
          mcoDaysElem.innerHTML = "" + daysSinceMco;
          since1stCaseElem.innerHTML = "" + daysSince1stCase;
          //mcoEndsElem.innerHTML = "" + daysTillMco;
@@ -620,6 +621,10 @@
          let reformatted = day + " " + textMonth + " " + year;
 
          return reformatted;
+      }
+
+      function formatNumber(num) {
+         return num = numeral(num).format('0,0');
       }
    </script>
 

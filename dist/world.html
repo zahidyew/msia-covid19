@@ -274,10 +274,10 @@
          t.row.add([
             num,
             `<a href="country.html?${data.country};${population}">${getCountryName(data.country)}</a>`,
-            formatNumber(data.cases, '0,0'),
-            formatNumber(data.recovered, '0,0'),
-            formatNumber(data.deaths, '0,0'),
-            formatNumber(activeCases, '0,0'),
+            formatNumber(data.cases),
+            formatNumber(data.recovered),
+            formatNumber(data.deaths),
+            formatNumber(activeCases),
             `${recoveryRate}%`,
             `${fatalityRate}%`,
             `${infected}%`
@@ -313,10 +313,10 @@
          const covidStarts = new Date(2019, 11, 8); // 0 is Jan //const covidStarts = new Date(2019, 10, 17);        
          let daysSinceCovid = Math.round(Math.abs((today - covidStarts) / oneDay));
 
-         casesElem.innerHTML = formatNumber(result.total_cases, '0,0');
-         recoveredElem.innerHTML = formatNumber(result.total_recovered, '0,0');
-         deathsElem.innerHTML = formatNumber(result.total_deaths, '0,0');
-         activeCasesElem.innerHTML = formatNumber(activeCases, '0,0');
+         casesElem.innerHTML = formatNumber(result.total_cases);
+         recoveredElem.innerHTML = formatNumber(result.total_recovered);
+         deathsElem.innerHTML = formatNumber(result.total_deaths);
+         activeCasesElem.innerHTML = formatNumber(activeCases);
          recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
          fatalityRateElem.innerHTML = (fatalityRate).toFixed(2) + "%";
          activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
@@ -325,8 +325,8 @@
          //affectedElem.innerHTML = result.total_affected_countries;
       }
 
-      function formatNumber(num, style) {
-         return num = numeral(num).format(style);
+      function formatNumber(num) {
+         return num = numeral(num).format('0,0');
       }
 
       //sort numbers in Descending order.
