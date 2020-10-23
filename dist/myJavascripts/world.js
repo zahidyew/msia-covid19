@@ -109,10 +109,6 @@ function displaySummary(data) {
    daysElem.innerHTML = "" + daysSinceCovid;
 }
 
-function formatNumber(num) {
-   return num = numeral(num).format('0,0');
-}
-
 //sort numbers in Descending order.
 /* function sortByProperty(property){
    return function(a,b){
