@@ -150,9 +150,9 @@ function displaySummary(data, size) {
 
    data[latest].differences == 0 ?
       (differencesElem.value = 0) :
-      data[latest].differences > 0 ?
-         (differencesElem.value = `&#8679;${formatNumber(data[latest].differences)}`) :
-         (a = formatNumber(data[latest].differences).toString(), differencesElem.value = `&#8681;${a.substr(1)}`);
+   data[latest].differences > 0 ?
+      (differencesElem.value = `&#8679;${formatNumber(data[latest].differences)}`) :
+      (a = formatNumber(data[latest].differences).toString(), differencesElem.value = `&#8681;${a.substr(1)}`);
 
    activeCasesElem.innerHTML = `${formatNumber(data[latest].activeCases)} (${differencesElem.value})`;
    mcoDaysElem.innerHTML = "" + daysSinceMco;
