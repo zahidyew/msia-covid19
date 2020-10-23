@@ -7,9 +7,6 @@
    <meta charset="UTF-8">
 
    <title>Covid-19</title>
-   <meta name="keywords" content="HTML5 Admin Template" />
-   <meta name="description" content="JSOFT Admin - Responsive HTML5 Template">
-   <meta name="author" content="JSOFT.net">
 
    <!-- Mobile Metas -->
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -21,8 +18,6 @@
    <!-- Vendor CSS -->
    <link rel="stylesheet" href="./assets/vendor/bootstrap/css/bootstrap.css" />
    <link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.css" />
-   <link rel="stylesheet" href="./assets/vendor/magnific-popup/magnific-popup.css" />
-   <link rel="stylesheet" href="./assets/vendor/bootstrap-datepicker/css/datepicker3.css" />
 
    <!-- Specific Page Vendor CSS -->
    <link rel="stylesheet" href="./assets/vendor/jquery-ui/css/ui-lightness/jquery-ui-1.10.4.custom.css" />
@@ -58,7 +53,6 @@
          <div class="logo-container">
             <a href="./index.html" class="logo">
                <p>Covid-19</p>
-               <!-- <img src="assets/images/logo.png" height="35" alt="JSOFT Admin" /> -->
             </a>
             <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
                data-fire-event="sidebar-left-opened">
@@ -164,18 +158,10 @@
                      
                      <div class="row">
                         <div class="col-md-12 col-xs-12">
-                           <!-- <div class="col-md-6 col-xs-6">
-                              <h5>Affected Countries:</h5>
-                              <h5 class="text-dark" id="affected"></h5>
-                           </div> -->
                            <div class="col-md-6 col-xs-6">
                               <h5>Days since 1st reported case (8/12/19):</h5>
                               <h5 class="text-dark" id="days"></h5>
                            </div>        
-                           <!-- <div class="col-md-6 col-xs-6">
-                              <h5>*Population infected is an approximation.</h5>
-                              <h5 class="text-dark" id="days"></h5>
-                           </div> -->
                         </div>
                      </div>
                      <table class="table table-bordered table-striped col-md-12 col-xs-12" id="datatable-tabletools">
@@ -204,152 +190,15 @@
    </section>
 
    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+
    <script src="./convertAbbrToFullName.js"></script>
-
-   <script>
-      var countriesDetails = [];
-
-      //getRequest("https://my-bypass-cors.herokuapp.com/bypass?url=https://thevirustracker.com/free-api?global=stats", "summary"));
-      getRequest("https://covid19-api.org/api/timeline", "summary");
-      getCountriesDetails('https://restcountries.eu/rest/v2/all?fields=name;alpha2Code;population');
-
-      // get all countries' name, alpha2Code and population
-      function getCountriesDetails(url) {
-         fetch(url, {method: 'GET'})
-            .then((response) => response.json())
-            .then((data) => {
-               countriesDetails = data;
-               //console.log(countriesDetails)
-               // only after we get the countries' details, we fetch the countries' covid data
-               getRequest("https://covid19-api.org/api/status", "table");
-            })
-            .catch((error) => {
-               console.error('Error:', error);
-            });
-      }
-
-      function getRequest(url, action) {
-         fetch(url, {method: 'GET'})
-            .then((response) => response.json())
-            .then((data) => {
-               action == "summary" ? (displaySummary(data)) :
-               action == "table" ? (matchCountryWithItsPopulation(data)) :
-               false;
-            })
-            .catch((error) => {
-               console.error('Error:', error);
-            });
-      }
-
-      function matchCountryWithItsPopulation(data) {
-         const size = data.length;
-         let num = 0;
-
-         /* 
-         data[i] is a country's covid data, we want to get the population for each country 
-         which is fetched from another API and stored in countryDetails array.
-         We do this by comparing the country code using .find
-         Remember .find returns the value of the first element in the array that satisfies the provided testing func. 
-         */
-         for (let i = 0; i < size; i++) {        
-            if(data[i].cases !== 0) { // dont include the countries with no recorded case
-               const currentCountry = countriesDetails.find(item => (item.alpha2Code === data[i].country));
-               //console.log(currentCountry)
-
-               num++;
-               createRow(data[i], num, currentCountry.population); 
-            } 
-         }
-      }
-
-      function createRow(data, num, population) {
-         const t = $('#datatable-tabletools').DataTable();
-
-         let activeCases = data.cases - data.recovered - data.deaths;
-         let recoveryRate = (data.recovered / data.cases * 100).toFixed(2);
-         let fatalityRate = (data.deaths / data.cases * 100).toFixed(2);
-         let infected = (data.cases / population * 100).toFixed(2);
-         //console.log(infected)
-
-         t.row.add([
-            num,
-            `<a href="country.html?${data.country};${population}">${getCountryName(data.country)}</a>`,
-            formatNumber(data.cases),
-            formatNumber(data.recovered),
-            formatNumber(data.deaths),
-            formatNumber(activeCases),
-            `${recoveryRate}%`,
-            `${fatalityRate}%`,
-            `${infected}%`
-         ]).draw("full-reset");
-      }
-
-      function displaySummary(data) {
-         const result = data[0];
-         const worldPopulation = 7646314700;
-         const casesElem = document.getElementById("cases");
-         const nCasesElem = document.getElementById("nCases");
-         const recoveredElem = document.getElementById("recovered");
-         const nRecovElem = document.getElementById("nRecov");
-         const deathsElem = document.getElementById("deaths");
-         const nDeathsElem = document.getElementById("nDeaths");
-         const activeCasesElem = document.getElementById("activeCases");
-         const differencesElem = document.getElementById("differences");
-         const infectedElem = document.getElementById("infected");
-         const recovRateElem = document.getElementById("recovRate");
-         const fatalityRateElem = document.getElementById("fatalityRate");
-         const activeCasesPercentElem = document.getElementById("activeCasesPercent");
-         const daysElem = document.getElementById("days");
-         //const affectedElem = document.getElementById("affected");
-
-         let activeCases = result.total_cases - result.total_recovered - result.total_deaths;
-         let recovRate = result.total_recovered / result.total_cases * 100;
-         let fatalityRate = result.total_deaths / result.total_cases * 100;
-         let activeCasesPercent = activeCases / result.total_cases * 100;
-         let infected = result.total_cases / worldPopulation * 100;
-
-         let today = new Date();
-         const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-         const covidStarts = new Date(2019, 11, 8); // 0 is Jan //const covidStarts = new Date(2019, 10, 17);        
-         let daysSinceCovid = Math.round(Math.abs((today - covidStarts) / oneDay));
-
-         casesElem.innerHTML = formatNumber(result.total_cases);
-         recoveredElem.innerHTML = formatNumber(result.total_recovered);
-         deathsElem.innerHTML = formatNumber(result.total_deaths);
-         activeCasesElem.innerHTML = formatNumber(activeCases);
-         recovRateElem.innerHTML = (recovRate).toFixed(2) + "%";
-         fatalityRateElem.innerHTML = (fatalityRate).toFixed(2) + "%";
-         activeCasesPercentElem.innerHTML = (activeCasesPercent).toFixed(2) + "%";
-         infectedElem.innerHTML = "Approx. " + (infected).toFixed(3) + "%"; 
-         daysElem.innerHTML = "" + daysSinceCovid;
-         //affectedElem.innerHTML = result.total_affected_countries;
-      }
-
-      function formatNumber(num) {
-         return num = numeral(num).format('0,0');
-      }
-
-      //sort numbers in Descending order.
-      /* function sortByProperty(property){ 
-         return function(a,b){  
-            if(a[property] > b[property]) // return negative num, then a,b 
-               return -1; 
-            else if(a[property] < b[property]) // return positive num, then b,a
-               return 1;
-
-            return 0;  
-         }  
-      } */
-   </script>
+   <script src="./myJavascripts/world.js"></script>
 
    <!-- Vendor -->
    <script src="./assets/vendor/jquery/jquery.js"></script>
    <script src="./assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
    <script src="./assets/vendor/bootstrap/js/bootstrap.js"></script>
    <script src="./assets/vendor/nanoscroller/nanoscroller.js"></script>
-   <script src="./assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-   <script src="./assets/vendor/magnific-popup/magnific-popup.js"></script>
-   <script src="./assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 
    <!-- Specific Page Vendor -->
    <script src="./assets/vendor/jquery-ui/js/jquery-ui-1.10.4.custom.js"></script>
