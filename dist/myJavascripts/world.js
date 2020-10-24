@@ -4,31 +4,22 @@ getRequest("https://covid19-api.org/api/timeline", "summary");
 getCountriesDetails('https://restcountries.eu/rest/v2/all?fields=name;alpha2Code;population');
 
 // get all countries' name, alpha2Code and population
-function getCountriesDetails(url) {
-   fetch(url, { method: 'GET' })
-      .then((response) => response.json())
-      .then((data) => {
-         countriesDetails = data;
-         //console.log(countriesDetails)
-         // only after we get the countries' details, we fetch the countries' covid data
-         getRequest("https://covid19-api.org/api/status", "table");
-      })
-      .catch((error) => {
-         console.error('Error:', error);
-      });
+async function getCountriesDetails(url) {
+   const response = await (fetch(url)).catch(err => console.log(err))
+   const data = await (response.json()).catch(err => console.log(err))
+
+   countriesDetails = data
+   // only after we get the countries' details, we fetch the countries' covid data
+   getRequest("https://covid19-api.org/api/status", "table");
 }
 
-function getRequest(url, action) {
-   fetch(url, { method: 'GET' })
-      .then((response) => response.json())
-      .then((data) => {
-         action == "summary" ? (displaySummary(data)) :
-            action == "table" ? (matchCountryWithItsPopulation(data)) :
-               false;
-      })
-      .catch((error) => {
-         console.error('Error:', error);
-      });
+async function getRequest(url, action) {
+   const response = await (fetch(url)).catch(err => console.log(err))
+   const data = await (response.json()).catch(err => console.log(err))
+
+   action == "summary" ? (displaySummary(data)) :
+   action == "table" ? (matchCountryWithItsPopulation(data)) :
+   false;
 }
 
 function matchCountryWithItsPopulation(data) {

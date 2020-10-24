@@ -1,9 +1,9 @@
-const API_URL = 'https://covid19-api.org/api/timeline/MY';
+const url = 'https://covid19-api.org/api/timeline/MY';
 const population = 32255684;
 let covidData = [];
 let flag = false;
 
-getRequest(API_URL);
+getRequest(url);
 
 // only when the user clicked the "Graphs" tab for 1st time will we draw the graphs
 document.getElementById("graphs")
@@ -17,16 +17,11 @@ document.getElementById("graphs")
    })
 
 // use fetch api to get the covid data from an API
-function getRequest(url) {
-   fetch(url, { method: 'GET' })
-      .then((response) => response.json())
-      .then((data) => {
-         //console.log(data);
-         processData(data);
-      })
-      .catch((error) => {
-         console.error('Error:', error);
-      });
+async function getRequest(url) {
+   const response = await (fetch(url)).catch(err => console.log(err))
+   const data = await (response.json()).catch(err => console.log(err))
+   
+   processData(data)
 }
 
 // process the raw data fetched from the API

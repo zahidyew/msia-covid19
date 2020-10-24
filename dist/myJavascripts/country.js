@@ -30,7 +30,7 @@ function getPopulation() {
    const url = window.location.href;
    const flagIndex = url.indexOf(";"); // we want to know the ; index in the url
    const population = url.substring(flagIndex + 1); // get the population after the ; flag
-   console.log(population);
+   //console.log(population);
 
    return population;
 }
@@ -43,16 +43,11 @@ function writeCountryNameInTitle(countryCode) {
 }
 
 // use fetch api to get the covid data from an API
-function getRequest(url) {
-   fetch(url, { method: 'GET' })
-      .then((response) => response.json())
-      .then((data) => {
-         //console.log(data);
-         processData(data);
-      })
-      .catch((error) => {
-         console.error('Error:', error);
-      });
+async function getRequest(url) {
+   const response = await (fetch(url)).catch(err => console.log(err))
+   const data = await (response.json()).catch(err => console.log(err))
+
+   processData(data)
 }
 
 // process the raw data fetched from the API
